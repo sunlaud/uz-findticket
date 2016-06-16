@@ -5,12 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.jjencoder.JJencoder;
-import io.github.sunlaud.findticket.model.Station;
-import io.github.sunlaud.findticket.model.Train;
-import io.github.sunlaud.findticket.request.FindTrainRequest;
-import io.github.sunlaud.findticket.request.FindTrainRequestFormatter;
-import io.github.sunlaud.findticket.response.FindStationResponse;
-import io.github.sunlaud.findticket.response.FindTrainResponse;
+import io.github.sunlaud.findticket.api.model.Station;
+import io.github.sunlaud.findticket.api.model.Train;
+import io.github.sunlaud.findticket.api.request.FindTrainRequest;
+import io.github.sunlaud.findticket.api.request.FindTrainRequestFormatter;
+import io.github.sunlaud.findticket.api.response.FindStationResponse;
+import io.github.sunlaud.findticket.api.response.FindTrainResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.http.Header;
@@ -35,7 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class TrainSearchService {
+public class TrainSearchServiceImpl {
     private String baseAddress = "http://booking.uz.gov.ua";
     private Pattern tokenEncodedDataPattern = Pattern.compile("\\$\\$_=.*~\\[\\];.*\"\"\\)\\(\\)\\)\\(\\);");
     private Pattern tokenPattern = Pattern.compile("[0-9a-f]{32}");
@@ -44,7 +44,7 @@ public class TrainSearchService {
     private ObjectMapper mapper;
     private CloseableHttpClient httpClient;
 
-    public TrainSearchService() {
+    public TrainSearchServiceImpl() {
         JsonFactory factory = new JsonFactory();
         mapper = new ObjectMapper(factory);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);

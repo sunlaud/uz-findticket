@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.request;
+package io.github.sunlaud.findticket.api.request;
 
 import lombok.Builder;
 import lombok.Data;

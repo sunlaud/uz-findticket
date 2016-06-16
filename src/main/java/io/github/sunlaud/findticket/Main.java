@@ -1,9 +1,9 @@
 package io.github.sunlaud.findticket;
 
 
-import io.github.sunlaud.findticket.model.FreeSeatsSummary;
-import io.github.sunlaud.findticket.model.Train;
-import io.github.sunlaud.findticket.request.FindTrainRequest;
+import io.github.sunlaud.findticket.api.model.FreeSeatsSummary;
+import io.github.sunlaud.findticket.api.model.Train;
+import io.github.sunlaud.findticket.api.request.FindTrainRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
-    private TrainSearchService trainSearchService = new TrainSearchService();
+    private TrainSearchServiceImpl trainSearchService = new TrainSearchServiceImpl();
 
     public static void main(String[] args) throws IOException {
         new Main().run();
