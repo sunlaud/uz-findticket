@@ -4,6 +4,8 @@ package io.github.sunlaud.findticket;
 import io.github.sunlaud.findticket.api.model.FreeSeatsSummary;
 import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
+import io.github.sunlaud.findticket.api.service.TicketSearchService;
+import io.github.sunlaud.findticket.api.service.impl.ApacheHttpClientTicketSearchService;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +13,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
-    private TrainSearchServiceImpl trainSearchService = new TrainSearchServiceImpl();
+    private    TicketSearchService ticketSearchService = new ApacheHttpClientTicketSearchService();
+
 
     public static void main(String[] args) throws IOException {
         new Main().run();
@@ -28,9 +31,9 @@ public class Main {
                 .stationIdTill(2200001)
                 .build();
 
-        List<Train> trains = trainSearchService.findTrains(findTrainRequest);
-        System.out.println("Found trains: \n" + trains);
 
+        List<Train> trains = ticketSearchService.findTrains(findTrainRequest).getTrains();
+        System.out.println("Found trains: \n" + trains);
         List<FreeSeatsSummary> freeSeats = trains.stream()
                 .filter(train -> train.getNumber().equals("079П"))
                 .map(Train::getFreeSeats)

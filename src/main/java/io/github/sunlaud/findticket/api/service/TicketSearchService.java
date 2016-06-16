@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.api;
+package io.github.sunlaud.findticket.api.service;
 
 import io.github.sunlaud.findticket.api.model.Coach;
 import io.github.sunlaud.findticket.api.model.Train;
