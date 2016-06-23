@@ -15,7 +15,7 @@ public class Train {
     @JsonProperty("travel_time")
     private String travelTime;
 
-    @JsonProperty("src_date")
+    @JsonProperty("from")
     private TimeAndPlace from;
 
     @JsonProperty("till")

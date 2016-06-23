@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class FreeSeatsSummary {
-    @JsonProperty("title")
-    private String title;
-
     @JsonProperty("letter")
     private String letter;
 
     @JsonProperty("places")
     private Integer places;
+
+    @JsonProperty("title")
+    private String title;
 }
