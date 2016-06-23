@@ -6,12 +6,12 @@ import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
 import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.service.impl.ApacheHttpClientTicketSearchService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+@Slf4j
 public class Main {
     private    TicketSearchService ticketSearchService = new ApacheHttpClientTicketSearchService();
 
@@ -19,7 +19,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         new Main().run();
     }
-
 
     private void run() throws IOException {
         //System.out.println(findStationsMatchingPrefix("Київ"));
@@ -31,17 +30,24 @@ public class Main {
                 .stationIdTill(2200001)
                 .build();
 
-
-        List<Train> trains = ticketSearchService.findTrains(findTrainRequest).getTrains();
-        System.out.println("Found trains: \n" + trains);
-        List<FreeSeatsSummary> freeSeats = trains.stream()
-                .filter(train -> train.getNumber().equals("079П"))
-                .map(Train::getFreeSeats)
-                .findFirst().get();
-        Map<String, Integer> seatsByType = freeSeats.stream()
-                .collect(Collectors.toMap(FreeSeatsSummary::getLetter, FreeSeatsSummary::getPlaces));
-        System.out.println("Free seats: " + freeSeats);
-        System.out.println("Free seats by type: " + seatsByType);
+        searchTrainsViaApacheHttpClientImpl(findTrainRequest, "079П");
+        searchTrainsViaApacheHttpClientImpl(findTrainRequest
+                .withSwappedStations()
+                .departureDate("02.07.2016")
+                .build(), "080К");
     }
 
+    private void searchTrainsViaApacheHttpClientImpl(FindTrainRequest findTrainRequest, String trainNumber) throws IOException {
+        System.out.println("\n==========================================");
+        List<Train> trains = ticketSearchService.findTrains(findTrainRequest).getTrains();
+        System.out.println("Found trains:");
+        trains.stream().forEach(System.out::println);
+        List<FreeSeatsSummary> freeSeats = trains.stream()
+                .filter(train -> trainNumber == null || train.getNumber().equals(trainNumber))
+                .map(Train::getFreeSeats)
+                .findFirst().get();
+        System.out.println("Free seats: ");
+        freeSeats.stream().forEach(System.out::println);
+        System.out.println("==========================================\n");
+    }
 }

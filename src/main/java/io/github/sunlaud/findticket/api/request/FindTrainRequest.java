@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class FindTrainRequest {
     @JsonProperty("station_id_from")
     private final Integer stationIdFrom;
@@ -18,6 +18,14 @@ public class FindTrainRequest {
 
     @JsonProperty("date_dep")
     private final String departureDate; //format 24.06.2016
+
+    public FindTrainRequestBuilder withSwappedStations() {
+        return builder()
+                .departureTime(departureTime) //need this coz lombok's toBuilder doesn't work for some reason
+                .departureDate(departureDate)
+                .stationIdTill(stationIdFrom)
+                .stationIdFrom(stationIdTill);
+    }
 
 //    more params with data from browser client - seems optional:
 //    ("another_ec", "0")

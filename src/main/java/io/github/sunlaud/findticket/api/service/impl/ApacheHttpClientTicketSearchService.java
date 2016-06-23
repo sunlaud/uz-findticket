@@ -58,6 +58,7 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
     @SneakyThrows
     @Override
     public FindTrainResponse findTrains(FindTrainRequest findTrainRequest) {
+        log.debug("Searching for trains satisfying params {}", findTrainRequest);
         String payload = FindTrainRequestFormatter.format(findTrainRequest);
         String rawResponse = sendApiRequest(Apis.FIND_TRAINS_URL, payload);
 //        String rawResponse = "{\"value\":[{\"num\":\"079\\u041f\",\"model\":0,\"category\":0,\"travel_time\":\"8:32\",\"from\":{\"station_id\":2210700,\"station\":\"\\u0414\\u043d\\u0456\\u043f\\u0440\\u043e\\u043f\\u0435\\u0442\\u0440\\u043e\\u0432\\u0441\\u044c\\u043a \\u0413\\u043e\\u043b\\u043e\\u0432\\u043d\\u0438\\u0439\",\"date\":1466796300,\"src_date\":\"2016-06-24 22:25:00\"},\"till\":{\"station_id\":2200001,\"station\":\"\\u041a\\u0438\\u0457\\u0432-\\u041f\\u0430\\u0441\\u0430\\u0436\\u0438\\u0440\\u0441\\u044c\\u043a\\u0438\\u0439\",\"date\":1466827020,\"src_date\":\"2016-06-25 06:57:00\"},\"types\":[{\"title\":\"\\u041b\\u044e\\u043a\\u0441\",\"letter\":\"\\u041b\",\"places\":19},{\"title\":\"\\u041a\\u0443\\u043f\\u0435\",\"letter\":\"\\u041a\",\"places\":12},{\"title\":\"\\u041f\\u043b\\u0430\\u0446\\u043a\\u0430\\u0440\\u0442\",\"letter\":\"\\u041f\",\"places\":1}]}],\"error\":null,\"data\":null,\"captcha\":null}";
