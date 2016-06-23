@@ -1,5 +1,6 @@
 package io.github.sunlaud.findticket.api.service.impl;
 
+import io.github.sunlaud.findticket.api.Apis;
 import io.github.sunlaud.findticket.api.model.Coach;
 import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
@@ -7,30 +8,25 @@ import io.github.sunlaud.findticket.api.response.FindStationResponse;
 import io.github.sunlaud.findticket.api.response.FindTrainResponse;
 import io.github.sunlaud.findticket.api.response.GetAvailableSeatsResponse;
 import io.github.sunlaud.findticket.api.response.GetCoachesResponse;
-import io.github.sunlaud.findticket.api.service.TicketSearchService;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Implementation of {@link io.github.sunlaud.findticket.api.service.TicketSearchService}
  * using Retrofit library
  */
-public class RetrofitTicketSearchService implements TicketSearchService {
-    @Override
-    public FindStationResponse findStations(String stationNameFirstLetters) {
-        return null;
-    }
+public interface RetrofitTicketSearchService {
+    @POST(Apis.FIND_STATIONS_URL)
+    FindStationResponse findStations(@Path("stationNameFirstLetters") String stationNameFirstLetters);
 
-    @Override
-    public FindTrainResponse findTrains(FindTrainRequest findTrainRequest) {
-        return null;
-    }
+    @FormUrlEncoded
+    @POST(Apis.FIND_TRAINS_URL)
+    FindTrainResponse findTrains(FindTrainRequest findTrainRequest);
 
-    @Override
-    public GetCoachesResponse getCoachesByType(Train train, String coachType) {
-        return null;
-    }
+    @POST(Apis.GET_COACHES_URL)
+    GetCoachesResponse getCoachesByType(Train train, String coachType);
 
-    @Override
-    public GetAvailableSeatsResponse getFreeSeats(Train train, Coach coach) {
-        return null;
-    }
+    @POST(Apis.GET_FREE_SEATS_URL)
+    GetAvailableSeatsResponse getFreeSeats(Train train, Coach coach);
 }
