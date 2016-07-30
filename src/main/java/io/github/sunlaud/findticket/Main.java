@@ -1,64 +1,51 @@
 package io.github.sunlaud.findticket;
 
 
-import feign.Feign;
-import feign.Logger;
-import feign.Response;
-import feign.jackson.JacksonDecoder;
-import feign.jaxrs.JAXRSContract;
-import feign.slf4j.Slf4jLogger;
-import io.github.sunlaud.findticket.api.Apis;
 import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
 import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.service.impl.apache.ApacheHttpClientTicketSearchService;
-import io.github.sunlaud.findticket.api.service.impl.feign.FeignUzRootContentProvider;
-import io.github.sunlaud.findticket.api.service.impl.feign.HeadersInterceptor;
-import io.github.sunlaud.findticket.api.service.impl.feign.UrlEncodingEncoder;
-import io.github.sunlaud.findticket.api.util.AuthService;
-import lombok.SneakyThrows;
+import io.github.sunlaud.findticket.api.service.impl.feign.FeignTicketSearchServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Main {
     private TicketSearchService apacheTicketSearchService = new ApacheHttpClientTicketSearchService();
-    private TicketSearchService feignTicketSearchService = getFeignTicketSearchService();
+    private TicketSearchService feignTicketSearchService = FeignTicketSearchServiceBuilder.getTicketSearchService();
 
     public static void main(String[] args) throws IOException {
         new Main().run();
     }
 
     private void run() throws IOException {
-        TicketSearchService ticketSearchService = feignTicketSearchService;
+        TicketSearchService ticketSearchService = apacheTicketSearchService;
+
+        System.out.println(ticketSearchService.findStations("Львів"));
+        System.out.println(ticketSearchService.findStations("Запоріжжя"));
+//        System.exit(0);
+
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
-                .departureDate(/*LocalDate.of(2016, 8, 19)*/ "19.08.2016")
+                .departureDate(LocalDate.of(2016, 8, 19))
+//                .departureDate("26.08.2016")
                 .departureTime("00:00")
-                .stationIdFrom(2210700)
-                .stationIdTill(2208001)
+                .stationIdFrom(2218000)
+                .stationIdTill(2210800)
                 .build();
 
-        searchTrains(ticketSearchService, findTrainRequest, "092");
-        //        System.out.println(ticketSearchService.findStations("Киї"));
+        searchTrains(ticketSearchService, findTrainRequest, 10, "070");
     }
 
-
-
-
-
-
-    private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, String trainCode) throws IOException {
+    private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheck, String trainCode) throws IOException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMM HH:mm");
         LocalDate date = LocalDate.of(2016, 8, 3);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < daysToCheck; i++) {
             date = date.plusDays(1);
             try {
                 List<Train> trains = service.findTrains(findTrainRequest.withDate(date).build()).getTrains();
@@ -70,7 +57,7 @@ public class Main {
                                 .collect(Collectors.joining(", "))
                                 + ")").collect(Collectors.joining(", ")) + "====================");
                 trains.stream()
-                        .filter(train -> train.getNumber().startsWith(trainCode))
+                        .filter(train -> trainCode == null || train.getNumber().startsWith(trainCode))
                         .forEach(train -> {
                             System.out.println(train.getNumber()
                                             + ": " + train.getFrom().getStation()
@@ -89,31 +76,4 @@ public class Main {
         }
     }
 
-    @SneakyThrows
-    private TicketSearchService getFeignTicketSearchService() {
-        FeignUzRootContentProvider authDataSource = Feign.builder()
-                .logger(new Slf4jLogger())
-                .logLevel(Logger.Level.BASIC)
-                .contract(new JAXRSContract())
-                .target(FeignUzRootContentProvider.class, Apis.BASE_URL);
-
-        Response rootResource = authDataSource.getRootResource();
-        Collection<String> cookies = rootResource.headers().get("set-cookie");
-        String cookie = cookies.stream()
-                .map(c -> c.split(";")[0].trim())
-                .collect(Collectors.joining("; "));
-
-        String rootPageBody = IOUtils.toString(rootResource.body().asReader());
-        AuthService autService = new AuthService(() -> rootPageBody);
-        HeadersInterceptor requestInterceptor = new HeadersInterceptor(autService, cookie);
-
-        return Feign.builder()
-                .logger(new Slf4jLogger())
-                .logLevel(Logger.Level.FULL)
-                .encoder(new UrlEncodingEncoder())
-                .decoder(new JacksonDecoder())
-                .contract(new JAXRSContract())
-                .requestInterceptor(requestInterceptor)
-                .target(TicketSearchService.class, Apis.BASE_URL);
-    }
 }

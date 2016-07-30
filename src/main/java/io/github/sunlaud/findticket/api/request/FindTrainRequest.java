@@ -1,6 +1,11 @@
 package io.github.sunlaud.findticket.api.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,14 +28,14 @@ public class FindTrainRequest {
     @JsonProperty("time_dep")
     private final String departureTime; //format 22:00
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
-//    @JsonProperty("date_dep")
-//    private final LocalDate departureDate; //format 24.06.2016
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @JsonProperty("date_dep")
-    private final String departureDate; //format 24.06.2016
+    private final LocalDate departureDate; //format 24.06.2016
+
+//    @JsonProperty("date_dep")
+//    private final String departureDate; //format 24.06.2016
 
     public FindTrainRequestBuilder withSwappedStations() {
         return builder()
@@ -43,7 +48,7 @@ public class FindTrainRequest {
     public FindTrainRequestBuilder withDate(LocalDate newDepartureDate) {
         return builder()
                 .departureTime(departureTime) //need this coz lombok's toBuilder doesn't work for some reason
-                .departureDate(newDepartureDate.format(DATE_FORMATTER))
+                .departureDate(newDepartureDate)
                 .stationIdTill(stationIdTill)
                 .stationIdFrom(stationIdFrom);
     }
