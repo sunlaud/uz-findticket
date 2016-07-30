@@ -8,6 +8,7 @@ import org.apache.http.Consts;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,22 @@ public class AuthService {
     private Pattern tokenEncodedDataPattern = Pattern.compile("\\$\\$_=.*~\\[\\];.*\"\"\\)\\(\\)\\)\\(\\);");
     private Pattern tokenPattern = Pattern.compile("[0-9a-f]{32}");
     private String token = null;
+    private final Supplier<String> contentProvider;
+
+
+    public AuthService() {
+        this.contentProvider = () -> {
+            try {
+                return Request.Get(Apis.BASE_URL).execute().returnContent().asString(Consts.UTF_8);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    public AuthService(Supplier<String> contentProvider) {
+        this.contentProvider = contentProvider;
+    }
 
     synchronized public String getToken() {
         if (token == null) {
@@ -26,8 +43,7 @@ public class AuthService {
 
     @SneakyThrows
     public void refresh() {
-        String rootPageContent = Request.Get(Apis.BASE_URL).execute().returnContent().asString(Consts.UTF_8);
-        token = findToken(rootPageContent);
+        token = findToken(contentProvider.get());
     }
 
     private String findToken(String rootPageContent) throws IOException {

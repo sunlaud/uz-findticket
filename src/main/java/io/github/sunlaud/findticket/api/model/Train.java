@@ -2,6 +2,7 @@ package io.github.sunlaud.findticket.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 import lombok.Data;
 
 import java.util.List;
@@ -23,4 +24,14 @@ public class Train {
 
     @JsonProperty("types")
     private List<FreeSeatsSummary> freeSeats;
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("number", number)
+                .add("from", from)
+                .add("till", till)
+                .add("travelTime", travelTime)
+                .toString();
+    }
 }
