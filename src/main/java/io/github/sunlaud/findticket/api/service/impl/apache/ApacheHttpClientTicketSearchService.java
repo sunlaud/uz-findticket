@@ -1,16 +1,12 @@
-package io.github.sunlaud.findticket.api.service.impl;
+package io.github.sunlaud.findticket.api.service.impl.apache;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.sunlaud.findticket.api.Apis;
-import io.github.sunlaud.findticket.api.model.Coach;
-import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
 import io.github.sunlaud.findticket.api.response.FindStationResponse;
 import io.github.sunlaud.findticket.api.response.FindTrainResponse;
-import io.github.sunlaud.findticket.api.response.GetAvailableSeatsResponse;
-import io.github.sunlaud.findticket.api.response.GetCoachesResponse;
 import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.util.AuthService;
 import io.github.sunlaud.findticket.api.util.Utils;
@@ -68,18 +64,6 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
         }
         return mapper.readValue(rawResponse, FindTrainResponse.class);
     }
-
-    @Override
-    public GetCoachesResponse getCoachesByType(Train train, String coachType) {
-        return null;
-    }
-
-    @Override
-    public GetAvailableSeatsResponse getFreeSeats(Train train, Coach coach) {
-        return null;
-    }
-
-
 
     @SneakyThrows
     private String sendApiRequest(String subUrl, String payload) {
