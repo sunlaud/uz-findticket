@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,32 +25,32 @@ public class Main {
     }
 
     private void run() throws IOException {
-        TicketSearchService ticketSearchService = apacheTicketSearchService;
-
-        System.out.println(ticketSearchService.findStations("Львів"));
-        System.out.println(ticketSearchService.findStations("Запоріжжя"));
+        TicketSearchService ticketSearchService = feignTicketSearchService;
+//        System.out.println(ticketSearchService.findStations("Львів"));
+//        System.out.println(ticketSearchService.findStations("Запоріжжя"));
 //        System.exit(0);
 
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
-                .departureDate(LocalDate.of(2016, 8, 19))
+                .departureDate(LocalDate.of(2016, 8, 29))
 //                .departureDate("26.08.2016")
                 .departureTime("00:00")
                 .stationIdFrom(2218000)
                 .stationIdTill(2210800)
                 .build();
 
-        searchTrains(ticketSearchService, findTrainRequest, 10, "070");
+        searchTrains(ticketSearchService, findTrainRequest, 1, "070");
     }
 
     private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheck, String trainCode) throws IOException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMM HH:mm");
-        LocalDate date = LocalDate.of(2016, 8, 3);
-        for (int i = 0; i < daysToCheck; i++) {
-            date = date.plusDays(1);
+        LocalDate date = findTrainRequest.getDepartureDate();
+        for (int i = 0; i < daysToCheck; i++, date = date.plusDays(1)) {
+            FindTrainRequest request = findTrainRequest.withDate(date).build();
             try {
-                List<Train> trains = service.findTrains(findTrainRequest.withDate(date).build()).getTrains();
-                System.out.println("======"  + date + ", found trains: "
+                List<Train> trains = service.findTrains(request).getTrains();
+                String nowFormatted = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+                System.out.println("=======" + nowFormatted + "====="  + date + ", found trains: "
                         + trains.stream().map(train ->
                         train.getNumber()
                                 + " (" + train.getFreeSeats().stream()
@@ -72,6 +73,7 @@ public class Main {
                         });
             } catch (Exception ex) {
                 log.error("Error searching trains, maybe there is no trains", ex);
+                System.out.println("Error searching trains: " + ex.getMessage());
             }
         }
     }
