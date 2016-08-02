@@ -15,4 +15,13 @@ public class GetCoachesResponse {
 
     @JsonProperty("coaches")
     private List<Coach> coaches;
+
+    @JsonProperty("places_allowed")
+    private Integer placesAllowed;
+
+    @JsonProperty("places_max")
+    private Integer placesMax;
+
+    @JsonProperty("content")
+    private String content;
 }
