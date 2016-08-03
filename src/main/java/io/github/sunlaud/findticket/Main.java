@@ -7,6 +7,7 @@ import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.service.impl.apache.ApacheHttpClientTicketSearchService;
 import io.github.sunlaud.findticket.api.service.impl.feign.FeignTicketSearchServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -16,12 +17,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Main {
     private TicketSearchService apacheTicketSearchService = new ApacheHttpClientTicketSearchService();
     private TicketSearchService feignTicketSearchService = FeignTicketSearchServiceBuilder.getTicketSearchService();
-    private final DateTimeFormatter HUMAN_READABLE = DateTimeFormatter.ofPattern("EE, d MMM HH:mm");
+    private final DateTimeFormatter HUMAN_READABLE = DateTimeFormatter.ofPattern("EE d MMM HH:mm");
 
 
     private static class DayOfWeekFilter implements Predicate<LocalDate> {
@@ -49,14 +51,15 @@ public class Main {
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
                 .departureDate(LocalDate.of(2016, 8, 10))
-                .departureTime(LocalTime.of(0, 0))
+                .departureTime(LocalTime.of(20, 0))
                 .stationIdFrom(2210700)
                 .stationIdTill(2208001)
                 .build();
 
         Predicate<LocalDate> suitableDate = new DayOfWeekFilter(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY);
-        Predicate<Train> suitableTrain = train -> train.getNumber().startsWith("42");
-        searchTrains(ticketSearchService, findTrainRequest, 10, suitableTrain, suitableDate);
+        Predicate<Train> suitableTrain = train ->
+                !train.getNumber().startsWith("42") && train.getTravelTime().toHours() < 12;
+        searchTrains(ticketSearchService, findTrainRequest, 30, suitableTrain, suitableDate);
     }
 
     private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheckCount, Predicate<Train> suitableTrain, Predicate<LocalDate> suitableDate) throws IOException {
@@ -81,15 +84,17 @@ public class Main {
     }
 
     private void printTrainInfo(Train train) {
-        System.out.println(train.getNumber()
-                        + ": " + train.getFrom().getStation()
-                        + " -> " + train.getTill().getStation()
-                        + ", " + train.getFrom().getDate().format(HUMAN_READABLE)
-                        + " -> " + train.getTill().getDate().format(HUMAN_READABLE)
-        );
-        train.getFreeSeats().forEach(seats -> {
-            System.out.print(seats.getLetter() + ": " + seats.getPlaces() + "\t");
-        });
-        System.out.println();
+        String freeSeats = train.getFreeSeats().stream()
+                .map(seats -> seats.getLetter() + "=" + seats.getPlaces())
+                .collect(Collectors.joining(", "));
+        StringBuilder sb = new StringBuilder();
+        sb.append(train.getNumber()+ ": ");
+        sb.append(StringUtils.rightPad(freeSeats, 16) + "(");
+        sb.append(train.getFrom().getDate().format(HUMAN_READABLE)+ " -> ");
+        sb.append(train.getTill().getDate().format(HUMAN_READABLE) + ", ");
+        sb.append(train.getTravelTime().getSeconds() / 3600.0 + " hours, ");
+        sb.append(train.getFrom().getStation() + " -> " + train.getTill().getStation() + ")");
+
+        System.out.println(sb.toString());
     }
 }

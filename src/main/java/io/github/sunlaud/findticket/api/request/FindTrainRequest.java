@@ -19,7 +19,9 @@ import java.time.format.DateTimeFormatter;
 @Builder(toBuilder = true)
 public class FindTrainRequest {
     private static final String DATE_FORMAT = "dd.MM.yyyy";
+    private static final String TIME_FORMAT = "HH:mm";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
 
     @JsonProperty("station_id_from")
@@ -28,6 +30,7 @@ public class FindTrainRequest {
     @JsonProperty("station_id_till")
     private final Integer stationIdTill;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
     @JsonProperty("time_dep")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)

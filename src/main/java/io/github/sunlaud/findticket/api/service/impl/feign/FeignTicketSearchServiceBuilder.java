@@ -68,9 +68,13 @@ public class FeignTicketSearchServiceBuilder {
                 template.header("GV-Token", authService.getToken());
             }
             template.header("GV-Ajax", "1");
+            template.header("GV-Screen", "1366x768");
             template.header("Content-Type", "application/x-www-form-urlencoded");
+            template.header("GV-Referer", Apis.BASE_URL);
             template.header("Referer", Apis.BASE_URL);
             template.header("Cookie", cookie);
+            template.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            template.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
         }
     }
 
