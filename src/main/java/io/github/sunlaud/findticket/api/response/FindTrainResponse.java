@@ -9,7 +9,12 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FindTrainResponse {
+public class FindTrainResponse extends ApiResponse<List<Train>> {
     @JsonProperty("value")
     private List<Train> trains;
+
+    @Override
+    public List<Train> getValue() {
+        return trains;
+    }
 }

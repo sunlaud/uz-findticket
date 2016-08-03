@@ -9,16 +9,33 @@ import io.github.sunlaud.findticket.api.service.impl.feign.FeignTicketSearchServ
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 @Slf4j
 public class Main {
     private TicketSearchService apacheTicketSearchService = new ApacheHttpClientTicketSearchService();
     private TicketSearchService feignTicketSearchService = FeignTicketSearchServiceBuilder.getTicketSearchService();
+    private final DateTimeFormatter HUMAN_READABLE = DateTimeFormatter.ofPattern("EE, d MMM HH:mm");
+
+
+    private static class DayOfWeekFilter implements Predicate<LocalDate> {
+        private final List<DayOfWeek> daysOfWeek;
+
+        private DayOfWeekFilter(DayOfWeek... daysOfWeek) {
+            this.daysOfWeek = Arrays.asList(daysOfWeek);
+        }
+
+        @Override
+        public boolean test(LocalDate date) {
+            return daysOfWeek.stream().anyMatch(dayOfWeek -> dayOfWeek == date.getDayOfWeek());
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         new Main().run();
@@ -26,56 +43,53 @@ public class Main {
 
     private void run() throws IOException {
         TicketSearchService ticketSearchService = feignTicketSearchService;
-//        System.out.println(ticketSearchService.findStations("Львів"));
-//        System.out.println(ticketSearchService.findStations("Запоріжжя"));
+//        System.out.println(ticketSearchService.findStations("Paris"));
 //        System.exit(0);
 
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
-                .departureDate(LocalDate.of(2016, 8, 29))
-//                .departureDate("26.08.2016")
-                .departureTime("00:00")
-                .stationIdFrom(2218000)
-                .stationIdTill(2210800)
+                .departureDate(LocalDate.of(2016, 8, 10))
+                .departureTime(LocalTime.of(0, 0))
+                .stationIdFrom(2210700)
+                .stationIdTill(2208001)
                 .build();
 
-        searchTrains(ticketSearchService, findTrainRequest, 1, "070");
+        Predicate<LocalDate> suitableDate = new DayOfWeekFilter(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY);
+        Predicate<Train> suitableTrain = train -> train.getNumber().startsWith("42");
+        searchTrains(ticketSearchService, findTrainRequest, 10, suitableTrain, suitableDate);
     }
 
-    private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheck, String trainCode) throws IOException {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMM HH:mm");
+    private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheckCount, Predicate<Train> suitableTrain, Predicate<LocalDate> suitableDate) throws IOException {
         LocalDate date = findTrainRequest.getDepartureDate();
-        for (int i = 0; i < daysToCheck; i++, date = date.plusDays(1)) {
+        for (int i = 0; i < daysToCheckCount; i++, date = date.plusDays(1)) {
+            if (!suitableDate.test(date)) {
+                continue;
+            }
             FindTrainRequest request = findTrainRequest.withDate(date).build();
             try {
-                List<Train> trains = service.findTrains(request).getTrains();
-                String nowFormatted = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-                System.out.println("=======" + nowFormatted + "====="  + date + ", found trains: "
-                        + trains.stream().map(train ->
-                        train.getNumber()
-                                + " (" + train.getFreeSeats().stream()
-                                .map(seats -> seats.getLetter() + ": " + seats.getPlaces())
-                                .collect(Collectors.joining(", "))
-                                + ")").collect(Collectors.joining(", ")) + "====================");
+                List<Train> trains = service.findTrains(request).getValue();
                 trains.stream()
-                        .filter(train -> trainCode == null || train.getNumber().startsWith(trainCode))
-                        .forEach(train -> {
-                            System.out.println(train.getNumber()
-                                            + ": " + train.getFrom().getStation()
-                                            + " -> " + train.getTill().getStation()
-                                            + ", " + train.getFrom().getDate().format(dateFormatter)
-                                            + " -> " + train.getTill().getDate().format(dateFormatter)
-                            );
-                            train.getFreeSeats().forEach(seats -> {
-                                System.out.print(seats.getLetter() + ": " + seats.getPlaces() + "\t");
-                            });
-                            System.out.println();
-                        });
+                        .filter(suitableTrain)
+                        .forEach(this::printTrainInfo);
             } catch (Exception ex) {
-                log.error("Error searching trains, maybe there is no trains", ex);
-                System.out.println("Error searching trains: " + ex.getMessage());
+                log.error("Error searching trains:", ex);
+                System.out.println("Error searching trains for "
+                        + request.getDepartureDate().atTime(request.getDepartureTime()).format(HUMAN_READABLE)
+                        + " - " + ex.getMessage());
             }
         }
     }
 
+    private void printTrainInfo(Train train) {
+        System.out.println(train.getNumber()
+                        + ": " + train.getFrom().getStation()
+                        + " -> " + train.getTill().getStation()
+                        + ", " + train.getFrom().getDate().format(HUMAN_READABLE)
+                        + " -> " + train.getTill().getDate().format(HUMAN_READABLE)
+        );
+        train.getFreeSeats().forEach(seats -> {
+            System.out.print(seats.getLetter() + ": " + seats.getPlaces() + "\t");
+        });
+        System.out.println();
+    }
 }

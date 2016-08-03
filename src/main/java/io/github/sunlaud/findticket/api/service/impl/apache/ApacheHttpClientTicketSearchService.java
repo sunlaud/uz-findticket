@@ -1,12 +1,14 @@
 package io.github.sunlaud.findticket.api.service.impl.apache;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.sunlaud.findticket.api.Apis;
+import io.github.sunlaud.findticket.api.model.Train;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
 import io.github.sunlaud.findticket.api.response.FindStationResponse;
-import io.github.sunlaud.findticket.api.response.FindTrainResponse;
+import io.github.sunlaud.findticket.api.response.ApiResponse;
 import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.util.AuthService;
 import io.github.sunlaud.findticket.api.util.Utils;
@@ -50,7 +52,7 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
 
     @SneakyThrows
     @Override
-    public FindTrainResponse findTrains(FindTrainRequest findTrainRequest) {
+    public ApiResponse<List<Train>> findTrains(FindTrainRequest findTrainRequest) {
         log.debug("Searching for trains satisfying params {}", findTrainRequest);
         String payload = Utils.asUrlEncodedString(findTrainRequest);
         String rawResponse = sendApiRequest(Apis.FIND_TRAINS_URL, payload);
@@ -59,7 +61,9 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
         if (log.isDebugEnabled()) {
             Utils.prettyPrintResponse(rawResponse);
         }
-        return mapper.readValue(rawResponse, FindTrainResponse.class);
+        TypeReference<List<Train>> ref = new TypeReference<List<Train>>() {
+        };
+        return mapper.readValue(rawResponse, ref);
     }
 
     @SneakyThrows
