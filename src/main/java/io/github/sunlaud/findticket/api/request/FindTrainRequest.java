@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -45,20 +46,13 @@ public class FindTrainRequest {
 //    @JsonProperty("date_dep")
 //    private final String departureDate; //format 24.06.2016
 
-    public FindTrainRequestBuilder withSwappedStations() {
-        return builder()
-                .departureTime(departureTime) //need this coz lombok's toBuilder doesn't work for some reason
-                .departureDate(departureDate)
+    public FindTrainRequest comingBackOn(LocalDateTime dateBack) {
+        return toBuilder()
                 .stationIdTill(stationIdFrom)
-                .stationIdFrom(stationIdTill);
-    }
-
-    public FindTrainRequestBuilder withDate(LocalDate newDepartureDate) {
-        return builder()
-                .departureTime(departureTime) //need this coz lombok's toBuilder doesn't work for some reason
-                .departureDate(newDepartureDate)
-                .stationIdTill(stationIdTill)
-                .stationIdFrom(stationIdFrom);
+                .stationIdFrom(stationIdTill)
+                .departureDate(dateBack.toLocalDate())
+                .departureTime(dateBack.toLocalTime())
+                .build();
     }
 
 //    more params with data from browser client - seems optional:

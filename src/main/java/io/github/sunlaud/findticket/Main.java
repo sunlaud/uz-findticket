@@ -50,16 +50,28 @@ public class Main {
 
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
-                .departureDate(LocalDate.of(2016, 8, 10))
-                .departureTime(LocalTime.of(20, 0))
+                .departureDate(LocalDate.of(2016, 8, 15))
+                .departureTime(LocalTime.of(0, 0))
                 .stationIdFrom(2210700)
                 .stationIdTill(2208001)
+//                .stationIdFrom(2208001)
+//                .stationIdTill(2210700)
                 .build();
+
+
+        findTrainRequest = findTrainRequest.toBuilder().build();
+
 
         Predicate<LocalDate> suitableDate = new DayOfWeekFilter(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY);
         Predicate<Train> suitableTrain = train ->
-                !train.getNumber().startsWith("42") && train.getTravelTime().toHours() < 12;
-        searchTrains(ticketSearchService, findTrainRequest, 30, suitableTrain, suitableDate);
+                !train.getNumber().startsWith("42") && train.getTravelTime().toHours() < 15;
+        searchTrains(ticketSearchService, findTrainRequest, 45, suitableTrain, suitableDate);
+
+        FindTrainRequest backRequest = findTrainRequest.comingBackOn(LocalDate.of(2016, 8, 28).atStartOfDay());
+
+        Predicate<LocalDate> suitableDateBack = new DayOfWeekFilter(DayOfWeek.MONDAY, DayOfWeek.SUNDAY);
+        searchTrains(ticketSearchService, backRequest, 45, suitableTrain, suitableDateBack);
+
     }
 
     private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheckCount, Predicate<Train> suitableTrain, Predicate<LocalDate> suitableDate) throws IOException {
@@ -68,7 +80,7 @@ public class Main {
             if (!suitableDate.test(date)) {
                 continue;
             }
-            FindTrainRequest request = findTrainRequest.withDate(date).build();
+            FindTrainRequest request = findTrainRequest.toBuilder().departureDate(date).build();
             try {
                 List<Train> trains = service.findTrains(request).getValue();
                 trains.stream()
