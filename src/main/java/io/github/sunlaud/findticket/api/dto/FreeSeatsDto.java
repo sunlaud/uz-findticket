@@ -1,10 +1,10 @@
-package io.github.sunlaud.findticket.api.model;
+package io.github.sunlaud.findticket.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class FreeSeatsSummary {
+public class FreeSeatsDto {
     @JsonProperty("letter")
     private String letter;
 

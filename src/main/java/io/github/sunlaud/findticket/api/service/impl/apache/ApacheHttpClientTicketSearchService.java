@@ -5,15 +5,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.sunlaud.findticket.api.Apis;
-import io.github.sunlaud.findticket.api.model.Train;
+import io.github.sunlaud.findticket.api.dto.TrainDto;
 import io.github.sunlaud.findticket.api.request.FindTrainRequest;
-import io.github.sunlaud.findticket.api.response.FindStationResponse;
+import io.github.sunlaud.findticket.api.request.GetAvailableSeatsRequest;
+import io.github.sunlaud.findticket.api.request.GetCoachesRequest;
 import io.github.sunlaud.findticket.api.response.ApiResponse;
+import io.github.sunlaud.findticket.api.response.FindStationResponse;
+import io.github.sunlaud.findticket.api.response.GetAvailableSeatsResponse;
+import io.github.sunlaud.findticket.api.response.GetCoachesResponse;
 import io.github.sunlaud.findticket.api.service.TicketSearchService;
 import io.github.sunlaud.findticket.api.util.AuthService;
 import io.github.sunlaud.findticket.api.util.Utils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.client.ClientProtocolException;
@@ -52,7 +57,7 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
 
     @SneakyThrows
     @Override
-    public ApiResponse<List<Train>> findTrains(FindTrainRequest findTrainRequest) {
+    public ApiResponse<List<TrainDto>> findTrains(FindTrainRequest findTrainRequest) {
         log.debug("Searching for trains satisfying params {}", findTrainRequest);
         String payload = Utils.asUrlEncodedString(findTrainRequest);
         String rawResponse = sendApiRequest(Apis.FIND_TRAINS_URL, payload);
@@ -61,9 +66,19 @@ public class ApacheHttpClientTicketSearchService implements TicketSearchService 
         if (log.isDebugEnabled()) {
             Utils.prettyPrintResponse(rawResponse);
         }
-        TypeReference<List<Train>> ref = new TypeReference<List<Train>>() {
+        TypeReference<List<TrainDto>> ref = new TypeReference<List<TrainDto>>() {
         };
         return mapper.readValue(rawResponse, ref);
+    }
+
+    @Override
+    public GetCoachesResponse getCoaches(GetCoachesRequest getCoachesRequest) {
+        throw new NotImplementedException("Get coaches via apache http client not implemented");
+    }
+
+    @Override
+    public GetAvailableSeatsResponse getFreeSeats(GetAvailableSeatsRequest getAvailableSeatsRequest) {
+        throw new NotImplementedException("Get free seats via apache http client not implemented");
     }
 
     @SneakyThrows

@@ -2,19 +2,19 @@ package io.github.sunlaud.findticket.api.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.sunlaud.findticket.api.model.Station;
+import io.github.sunlaud.findticket.api.dto.StationDto;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FindStationResponse extends ApiResponse<List<Station>> {
+public class FindStationResponse extends ApiResponse<List<StationDto>> {
     @JsonProperty("value")
-    private List<Station> stations;
+    private List<StationDto> stations;
 
     @Override
-    public List<Station> getValue() {
+    public List<StationDto> getValue() {
         return stations;
     }
 }

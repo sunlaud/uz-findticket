@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.api.model;
+package io.github.sunlaud.findticket.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Train {
+public class TrainDto {
     private static final String TIME_FORMAT = "HH:mm";
 
     @JsonProperty("num")
@@ -29,13 +29,13 @@ public class Train {
     private LocalTime travelTime;
 
     @JsonProperty("from")
-    private TimeAndPlace from;
+    private TimeAndPlaceDto from;
 
     @JsonProperty("till")
-    private TimeAndPlace till;
+    private TimeAndPlaceDto till;
 
     @JsonProperty("types")
-    private List<FreeSeatsSummary> freeSeats;
+    private List<FreeSeatsDto> freeSeats;
 
     public Duration getTravelTime() {
         return Duration.ofSeconds(travelTime.toSecondOfDay());

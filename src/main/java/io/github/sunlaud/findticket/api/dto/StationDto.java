@@ -1,10 +1,10 @@
-package io.github.sunlaud.findticket.api.model;
+package io.github.sunlaud.findticket.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Station {
+public class StationDto {
     @JsonProperty("title")
     private String title;
 

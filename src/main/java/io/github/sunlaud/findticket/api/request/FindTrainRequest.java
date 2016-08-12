@@ -26,10 +26,10 @@ public class FindTrainRequest {
 
 
     @JsonProperty("station_id_from")
-    private final Integer stationIdFrom;
+    private final int stationIdFrom;
 
     @JsonProperty("station_id_till")
-    private final Integer stationIdTill;
+    private final int stationIdTill;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
     @JsonProperty("time_dep")
@@ -42,9 +42,6 @@ public class FindTrainRequest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonProperty("date_dep")
     private final LocalDate departureDate; //format 24.06.2016
-
-//    @JsonProperty("date_dep")
-//    private final String departureDate; //format 24.06.2016
 
     public FindTrainRequest comingBackOn(LocalDateTime dateBack) {
         return toBuilder()

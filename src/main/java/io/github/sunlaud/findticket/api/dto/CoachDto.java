@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.api.model;
+package io.github.sunlaud.findticket.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,19 +8,19 @@ import java.util.Map;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Coach {
+public class CoachDto {
     @JsonProperty("num")
-    private Integer number;
+    private int number;
 
     /** sample values Л, К, П */
     @JsonProperty("type")
     private String type;
 
     @JsonProperty("places_cnt")
-    private Integer placesCount;
+    private int placesCount;
 
     @JsonProperty("coach_type_id")
-    private Integer coachTypeId;
+    private int coachTypeId;
 
     /** sample values А, Б */
     @JsonProperty("coach_class")
