@@ -1,0 +1,8 @@
+package io.github.sunlaud.findticket;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class TrainSearchService {
+
+}
