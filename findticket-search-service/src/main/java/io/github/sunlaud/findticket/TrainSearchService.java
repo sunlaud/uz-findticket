@@ -9,9 +9,11 @@ import java.time.LocalDate;
 public interface TrainSearchService {
     /**
      * Available routes to station at given day.
-     * @param to to station
+     * @param toStationId to station
+     * @param fromStationId from station
      * @param at at time
      * @return available routes or empty iterable
      */
-    Iterable<TrainRoute> availableRoutes(Station to, Station from, LocalDate at);
+    Iterable<TrainRoute> availableRoutes(String toStationId, String fromStationId,
+                                         LocalDate at);
 }

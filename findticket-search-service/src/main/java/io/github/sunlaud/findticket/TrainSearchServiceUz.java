@@ -22,14 +22,14 @@ public class TrainSearchServiceUz implements TrainSearchService {
     }
 
     @Override
-    public Iterable<TrainRoute> availableRoutes(Station to, Station from, LocalDate at) {
+    public Iterable<TrainRoute> availableRoutes(String to, String from, LocalDate at) {
         FindTrainRequest request = FindTrainRequest.builder()
                 .departureDate(at)
                 .departureTime(LocalTime.of(0, 0))
 //                .stationIdFrom(2210700)
-                .stationIdFrom(Integer.parseInt(from.getId()))
+                .stationIdFrom(Integer.parseInt(from))
 //                .stationIdTill(2208001)
-                .stationIdTill(Integer.parseInt(to.getId()))
+                .stationIdTill(Integer.parseInt(to))
                 .build();
 
         ApiResponse<List<TrainDto>> response = api.findTrains(request);
