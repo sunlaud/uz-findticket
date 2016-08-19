@@ -13,5 +13,5 @@ public interface TrainSearchService {
      * @param at at time
      * @return available routes or empty iterable
      */
-    Iterable<TrainRoute> availableRoutes(Station to, LocalDate at);
+    Iterable<TrainRoute> availableRoutes(Station to, Station from, LocalDate at);
 }
