@@ -14,8 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.sunlaud.findticket</groupId>
-            <artifactId>uz-findticket-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>findticket-uz-client</artifactId>
         </dependency>
     </dependencies>
 

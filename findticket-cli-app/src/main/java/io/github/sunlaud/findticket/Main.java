@@ -1,14 +1,13 @@
 package io.github.sunlaud.findticket;
 
 
-import io.github.sunlaud.findticket.client.dto.CoachDto;
-import io.github.sunlaud.findticket.client.dto.TrainDto;
-import io.github.sunlaud.findticket.client.request.FindTrainRequest;
-import io.github.sunlaud.findticket.client.request.GetCoachesRequest;
-import io.github.sunlaud.findticket.client.response.GetCoachesResponse;
-import io.github.sunlaud.findticket.client.service.TicketSearchService;
-import io.github.sunlaud.findticket.client.service.impl.apache.ApacheHttpClientTicketSearchService;
-import io.github.sunlaud.findticket.client.service.impl.feign.FeignTicketSearchServiceBuilder;
+import io.github.sunlaud.findticket.client.uz.dto.CoachDto;
+import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
+import io.github.sunlaud.findticket.client.uz.request.FindTrainRequest;
+import io.github.sunlaud.findticket.client.uz.request.GetCoachesRequest;
+import io.github.sunlaud.findticket.client.uz.response.GetCoachesResponse;
+import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
+import io.github.sunlaud.findticket.client.uz.service.impl.feign.FeignTicketSearchServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,8 +24,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class Main {
-    private TicketSearchService apacheTicketSearchService = new ApacheHttpClientTicketSearchService();
-    private TicketSearchService feignTicketSearchService = FeignTicketSearchServiceBuilder.getTicketSearchService();
+    private UzTicketSearchService feignTicketSearchService = FeignTicketSearchServiceBuilder.getTicketSearchService();
     private final DateTimeFormatter HUMAN_READABLE = DateTimeFormatter.ofPattern("EE d MMM HH:mm");
 
 
@@ -48,10 +46,7 @@ public class Main {
     }
 
     private void run() throws IOException {
-        TicketSearchService ticketSearchService = feignTicketSearchService;
-//        System.out.println(ticketSearchService.findStations("Paris"));
-//        System.exit(0);
-
+        UzTicketSearchService ticketSearchService = feignTicketSearchService;
 
         FindTrainRequest findTrainRequest = FindTrainRequest.builder()
                 .departureDate(LocalDate.now().plusDays(10))
@@ -76,7 +71,7 @@ public class Main {
         searchTrains(ticketSearchService, findTrainRequest, 10, suitableTrain, suitableDate);
     }
 
-    private void searchTrains(TicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheckCount, Predicate<TrainDto> suitableTrain, Predicate<LocalDate> suitableDate) throws IOException {
+    private void searchTrains(UzTicketSearchService service, FindTrainRequest findTrainRequest, int daysToCheckCount, Predicate<TrainDto> suitableTrain, Predicate<LocalDate> suitableDate) throws IOException {
         LocalDate date = findTrainRequest.getDepartureDate();
         for (int i = 0; i < daysToCheckCount; i++, date = date.plusDays(1)) {
             if (!suitableDate.test(date)) {
@@ -104,7 +99,7 @@ public class Main {
         }
     }
 
-    private GetCoachesResponse getCoaches(TicketSearchService service, TrainDto train, String coachType) {
+    private GetCoachesResponse getCoaches(UzTicketSearchService service, TrainDto train, String coachType) {
         GetCoachesRequest getCoachesRequest = GetCoachesRequest.builder()
                 .stationIdFrom(train.getFrom().getStationId())
                 .stationIdTill(train.getTill().getStationId())

@@ -15,7 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
 
-public interface TicketSearchService {
+public interface UzTicketSearchService {
     @POST
     @Path(Apis.FIND_STATIONS_URL)
     ApiResponse<List<StationDto>> findStations(@PathParam("stationNameFirstLetters") String stationNameFirstLetters);

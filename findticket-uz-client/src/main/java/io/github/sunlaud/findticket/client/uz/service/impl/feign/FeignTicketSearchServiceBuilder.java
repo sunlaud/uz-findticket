@@ -12,7 +12,7 @@ import feign.jackson.JacksonDecoder;
 import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
 import io.github.sunlaud.findticket.client.uz.Apis;
-import io.github.sunlaud.findticket.client.uz.service.TicketSearchService;
+import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
 import io.github.sunlaud.findticket.client.uz.util.AuthService;
 import io.github.sunlaud.findticket.client.uz.util.Utils;
 import lombok.SneakyThrows;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class FeignTicketSearchServiceBuilder {
 
     @SneakyThrows
-    public static TicketSearchService getTicketSearchService() {
+    public static UzTicketSearchService getTicketSearchService() {
         FeignUzRootContentProvider authDataSource = Feign.builder()
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.BASIC)
@@ -49,15 +49,15 @@ public class FeignTicketSearchServiceBuilder {
                 .decoder(new JacksonDecoder())
                 .contract(new JAXRSContract())
                 .requestInterceptor(requestInterceptor)
-                .target(TicketSearchService.class, Apis.BASE_URL);
+                .target(UzTicketSearchService.class, Apis.BASE_URL);
     }
 
 
-    public static class HeadersInterceptor implements RequestInterceptor {
+    private static class HeadersInterceptor implements RequestInterceptor {
         private final String cookie;
         private final AuthService authService;
 
-        public HeadersInterceptor(AuthService authService, String cookie) {
+        HeadersInterceptor(AuthService authService, String cookie) {
             this.authService = authService;
             this.cookie = cookie;
         }
@@ -79,7 +79,7 @@ public class FeignTicketSearchServiceBuilder {
     }
 
 
-    public static class UrlEncodingEncoder implements Encoder {
+    private static class UrlEncodingEncoder implements Encoder {
 
         @Override
         public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {

@@ -1,11 +1,8 @@
 package io.github.sunlaud.findticket.client.uz.util;
 
 import com.jjencoder.JJencoder;
-import io.github.sunlaud.findticket.client.uz.Apis;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.Consts;
-import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -19,17 +16,6 @@ public class AuthService {
     private Pattern tokenPattern = Pattern.compile("[0-9a-f]{32}");
     private String token = null;
     private final Supplier<String> contentProvider;
-
-
-    public AuthService() {
-        this.contentProvider = () -> {
-            try {
-                return Request.Get(Apis.BASE_URL).execute().returnContent().asString(Consts.UTF_8);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
 
     public AuthService(Supplier<String> contentProvider) {
         this.contentProvider = contentProvider;
