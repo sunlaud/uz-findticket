@@ -1,16 +1,18 @@
 package io.github.sunlaud.findticket.client.uz.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public abstract class SearchResponse<T> {
     @JsonProperty("data")
-    protected Object data;
+    public Object data;
 
     @JsonProperty("captcha")
-    protected Object captcha;
+    public Object captcha;
 
     @JsonProperty("error")
-    protected boolean error;
+    public boolean error;
 
     public abstract T getValue();
 }
