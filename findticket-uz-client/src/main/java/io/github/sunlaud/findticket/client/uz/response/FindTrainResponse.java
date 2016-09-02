@@ -1,15 +1,20 @@
 package io.github.sunlaud.findticket.client.uz.response;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
+import lombok.Data;
 
 import java.util.List;
 
-@JsonTypeInfo(use= JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "error", visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ErrorSearchResponse.class, name = "true"),
-        @JsonSubTypes.Type(value = SuccessFindTrainResponse.class, name = "null"),
-})
-public abstract class FindTrainResponse extends SearchResponse<List<TrainDto>> {
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FindTrainResponse extends SearchResponse<List<TrainDto>> {
+    @JsonProperty("value")
+    private List<TrainDto> trains;
+
+    @Override
+    public List<TrainDto> getValue() {
+            return trains;
+    }
 }

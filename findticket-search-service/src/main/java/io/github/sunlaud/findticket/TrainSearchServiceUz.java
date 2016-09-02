@@ -6,7 +6,6 @@ import io.github.sunlaud.findticket.api.TrainRoute;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
 import io.github.sunlaud.findticket.client.uz.request.FindTrainRequest;
-import io.github.sunlaud.findticket.client.uz.response.FindTrainResponse;
 import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
 import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
 import io.github.sunlaud.findticket.client.uz.service.impl.feign.FeignTicketSearchServiceBuilder;
@@ -39,7 +38,7 @@ public class TrainSearchServiceUz implements TrainSearchService {
                 .stationIdTill(Integer.parseInt(to))
                 .build();
 
-        FindTrainResponse response = api.findTrains(request);
+        SearchResponse<List<TrainDto>> response = api.findTrains(request);
         if (response.isError()) {
             System.out.println(response.getData());
             return Collections.emptyList();

@@ -1,6 +1,7 @@
 package io.github.sunlaud.findticket.client.uz.service.impl.feign;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Client;
 import feign.Feign;
 import feign.Logger;
@@ -13,6 +14,7 @@ import feign.jackson.JacksonDecoder;
 import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
 import io.github.sunlaud.findticket.client.uz.Apis;
+import io.github.sunlaud.findticket.client.uz.response.deserialize.SearchResponseInstantiationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
 import io.github.sunlaud.findticket.client.uz.util.AuthService;
 import io.github.sunlaud.findticket.client.uz.util.Utils;
@@ -48,11 +50,15 @@ public class FeignTicketSearchServiceBuilder {
         AuthService autService = new AuthService(() -> rootPageBody);
         HeadersInterceptor requestInterceptor = new HeadersInterceptor(autService, cookie);
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setConfig(mapper.getDeserializationConfig()
+                .withHandler(new SearchResponseInstantiationProblemHandler()));
+
         return Feign.builder()
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.FULL)
                 .encoder(new UrlEncodingEncoder())
-                .decoder(new JacksonDecoder())
+                .decoder(new JacksonDecoder(mapper))
                 .contract(new JAXRSContract())
                 .requestInterceptor(requestInterceptor)
                 .client(client)
