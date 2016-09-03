@@ -23,6 +23,7 @@ public class Mappers {
         mapperFactory = new DefaultMapperFactory.Builder().build();
         mapperFactory.classMap(StationDto.class, Station.class)
                 .byDefault()
+                .field("title", "name")
                 .register();
         mapperFactory.classMap(FreeSeatsDto.class, SeatsSummary.class)
                 .byDefault()
