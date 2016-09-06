@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sunlaud/uz-findticket.svg?branch=master)](https://travis-ci.org/sunlaud/uz-findticket)
+
 # uz-findticket
 
 
