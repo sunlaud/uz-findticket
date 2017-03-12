@@ -5,6 +5,9 @@ import lombok.Data;
 
 @Data
 public class FreeSeatsDto {
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("letter")
     private String letter;
 

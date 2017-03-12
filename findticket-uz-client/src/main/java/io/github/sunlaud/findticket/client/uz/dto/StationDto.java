@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class StationDto {
-    @JsonProperty("title")
+    @JsonProperty("label")
     private String title;
 
-    @JsonProperty("station_id")
+    @JsonProperty("value")
     private int id;
 }

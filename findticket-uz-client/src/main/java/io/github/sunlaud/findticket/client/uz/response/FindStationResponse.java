@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.util.List;
 
+//TODO check and remove: looks like this class is not needed any more (due to UZ API change)
+@Deprecated
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FindStationResponse extends SearchResponse<List<StationDto>> {

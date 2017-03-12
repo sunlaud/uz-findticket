@@ -67,8 +67,8 @@ public class TrainSearchServiceUz implements TrainSearchService {
 
     @Override
     public List<Station> findStations(String prefix) {
-        SearchResponse<List<StationDto>> response = api.findStations(prefix);
-        return Mappers.get().mapAsList(response.getValue(), Station.class);
+        List<StationDto> response = api.findStations(prefix);
+        return Mappers.get().mapAsList(response, Station.class);
     }
 
     @Override

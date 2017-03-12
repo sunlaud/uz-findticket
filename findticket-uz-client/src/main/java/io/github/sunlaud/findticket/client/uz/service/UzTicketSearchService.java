@@ -13,12 +13,13 @@ import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 public interface UzTicketSearchService {
     @POST
     @Path(Apis.FIND_STATIONS_URL)
-    SearchResponse<List<StationDto>> findStations(@PathParam("stationNameFirstLetters") String stationNameFirstLetters);
+    List<StationDto> findStations(@QueryParam("term") String stationNameFirstLetters);
 
     @POST
     @Path(Apis.FIND_TRAINS_URL)

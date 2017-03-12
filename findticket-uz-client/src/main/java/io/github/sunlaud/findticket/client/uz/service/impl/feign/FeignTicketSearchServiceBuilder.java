@@ -10,6 +10,7 @@ import feign.RequestTemplate;
 import feign.Response;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
 import feign.jackson.JacksonDecoder;
 import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
@@ -61,6 +62,7 @@ public class FeignTicketSearchServiceBuilder {
                 .decoder(new JacksonDecoder(mapper))
                 .contract(new JAXRSContract())
                 .requestInterceptor(requestInterceptor)
+                .errorDecoder(new IllegalArgumentExceptionOn503Decoder())
                 .client(client)
                 .target(UzTicketSearchService.class, Apis.BASE_URL);
     }
@@ -97,6 +99,19 @@ public class FeignTicketSearchServiceBuilder {
         @Override
         public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
             template.body(Utils.asUrlEncodedString(object));
+        }
+
+    }
+
+    static class IllegalArgumentExceptionOn503Decoder implements ErrorDecoder {
+        private final Default defaultDecoder = new ErrorDecoder.Default();
+
+        @Override
+        public Exception decode(String methodKey, Response response) {
+            //Strange UZ API seems to respond by 503 to any error
+            if (response.status() == 503)
+                throw new IllegalArgumentException("Looks like Bad Request (UZ API seems to respond by 503 to any error)");
+            return defaultDecoder.decode(methodKey, response);
         }
 
     }

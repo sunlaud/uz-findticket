@@ -1,12 +1,9 @@
 package io.github.sunlaud.findticket.client.uz.response.deserialize;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.response.ErrorSearchResponse;
-import io.github.sunlaud.findticket.client.uz.response.FindStationResponse;
 import io.github.sunlaud.findticket.client.uz.response.FindTrainResponse;
-import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -14,6 +11,7 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -29,7 +27,7 @@ public class SearchResponseInstantiationProblemHandlerTest {
     public static Iterable<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {"find_train.json", FindTrainResponse.class},
-                {"find_station.json", FindStationResponse.class},
+                {"find_station.json", List.class},
                 {"error.json", ErrorSearchResponse.class}
         });
     }
@@ -45,10 +43,9 @@ public class SearchResponseInstantiationProblemHandlerTest {
         ObjectMapper mapper = new ObjectMapper();
         DeserializationProblemHandler handler = new SearchResponseInstantiationProblemHandler();
         mapper.setConfig(mapper.getDeserializationConfig().withHandler(handler));
-        SearchResponse response = mapper.readValue(is, SearchResponse.class);
+        Object response = mapper.readValue(is, expectedClass);
         assertThat(response, instanceOf(expectedClass));
         boolean allFieldsAreNull = Arrays.stream(response.getClass().getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(JsonProperty.class))
                 .allMatch(Objects::isNull);
         assertFalse("Deserialized object should have not null fields", allFieldsAreNull);
     }
