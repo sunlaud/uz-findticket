@@ -3,11 +3,15 @@ package io.github.sunlaud.findticket.client.uz.util;
 import com.jjencoder.JJencoder;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 
 
 @Slf4j
@@ -34,10 +38,9 @@ public class AuthService {
     }
 
     private String findToken(String rootPageContent) throws IOException {
+        checkArgument(StringUtils.isNotBlank(rootPageContent), "Content is blank");
         Matcher matcher = tokenEncodedDataPattern.matcher(rootPageContent);
-        if (!matcher.find()) {
-            throw new IllegalStateException("Can't find encoded token data");
-        }
+        checkState(matcher.find(), "Can't find encoded token data in page content");
         String encodedTokenData = rootPageContent.substring(matcher.start(), matcher.end());
         log.debug("encodedTokenData={}", encodedTokenData);
         String decodedTokenData = new JJencoder().decode(encodedTokenData);
