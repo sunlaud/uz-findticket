@@ -108,9 +108,9 @@ public class FeignTicketSearchServiceBuilder {
 
         @Override
         public Exception decode(String methodKey, Response response) {
-            //Strange UZ API seems to respond by 503 to any error
+            //Strange UZ API seems to respond by 503 to any client error
             if (response.status() == 503)
-                throw new IllegalArgumentException("Looks like Bad Request (UZ API seems to respond by 503 to any error)");
+                throw new IllegalArgumentException("Looks like Bad Request (UZ API seems to respond by 503 to any client error)");
             return defaultDecoder.decode(methodKey, response);
         }
 

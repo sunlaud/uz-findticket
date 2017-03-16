@@ -40,7 +40,7 @@ public class AuthService {
     private String findToken(String rootPageContent) throws IOException {
         checkArgument(StringUtils.isNotBlank(rootPageContent), "Content is blank");
         Matcher matcher = tokenEncodedDataPattern.matcher(rootPageContent);
-        checkState(matcher.find(), "Can't find encoded token data in page content");
+        checkState(matcher.find(), "Can't find encoded token data (regex: %s) in page content:\n %s", tokenEncodedDataPattern, rootPageContent);
         String encodedTokenData = rootPageContent.substring(matcher.start(), matcher.end());
         log.debug("encodedTokenData={}", encodedTokenData);
         String decodedTokenData = new JJencoder().decode(encodedTokenData);
