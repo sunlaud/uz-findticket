@@ -2,12 +2,7 @@ package io.github.sunlaud.findticket.client.uz.service.impl.feign;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.Client;
-import feign.Feign;
-import feign.Logger;
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
-import feign.Response;
+import feign.*;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
@@ -17,10 +12,8 @@ import feign.slf4j.Slf4jLogger;
 import io.github.sunlaud.findticket.client.uz.Apis;
 import io.github.sunlaud.findticket.client.uz.response.deserialize.SearchResponseInstantiationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
-import io.github.sunlaud.findticket.client.uz.util.AuthService;
 import io.github.sunlaud.findticket.client.uz.util.Utils;
 import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -34,22 +27,20 @@ public class FeignTicketSearchServiceBuilder {
 
     @SneakyThrows
     public static UzTicketSearchService getTicketSearchService(Client client) {
-        FeignUzRootContentProvider authDataSource = Feign.builder()
+        FeignUzRootContentProvider rootPageSource = Feign.builder()
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.BASIC)
                 .contract(new JAXRSContract())
                 .client(client)
                 .target(FeignUzRootContentProvider.class, Apis.BASE_URL);
 
-        Response rootResource = authDataSource.getRootResource();
+        Response rootResource = rootPageSource.getRootResource();
         Collection<String> cookies = rootResource.headers().get("set-cookie");
         String cookie = cookies.stream()
                 .map(c -> c.split(";")[0].trim())
                 .collect(Collectors.joining("; "));
 
-        String rootPageBody = IOUtils.toString(rootResource.body().asReader());
-        AuthService autService = new AuthService(() -> rootPageBody);
-        HeadersInterceptor requestInterceptor = new HeadersInterceptor(autService, cookie);
+        HeadersInterceptor requestInterceptor = new HeadersInterceptor(cookie);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setConfig(mapper.getDeserializationConfig()
@@ -70,18 +61,13 @@ public class FeignTicketSearchServiceBuilder {
 
     private static class HeadersInterceptor implements RequestInterceptor {
         private final String cookie;
-        private final AuthService authService;
 
-        public HeadersInterceptor(AuthService authService, String cookie) {
-            this.authService = authService;
+        public HeadersInterceptor(String cookie) {
             this.cookie = cookie;
         }
 
         @Override
         public void apply(RequestTemplate template) {
-            if (!"/".equals(template.url())) {
-                template.header("GV-Token", authService.getToken());
-            }
             template.header("GV-Ajax", "1");
             template.header("GV-Screen", "1366x768");
             template.header("Content-Type", "application/x-www-form-urlencoded");
