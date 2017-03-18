@@ -16,8 +16,6 @@ import io.github.sunlaud.findticket.client.uz.util.Utils;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class FeignTicketSearchServiceBuilder {
 
@@ -27,21 +25,7 @@ public class FeignTicketSearchServiceBuilder {
 
     @SneakyThrows
     public static UzTicketSearchService getTicketSearchService(Client client) {
-        FeignUzRootContentProvider rootPageSource = Feign.builder()
-                .logger(new Slf4jLogger())
-                .logLevel(Logger.Level.BASIC)
-                .contract(new JAXRSContract())
-                .client(client)
-                .target(FeignUzRootContentProvider.class, Apis.BASE_URL);
-
-        Response rootResource = rootPageSource.getRootResource();
-        Collection<String> cookies = rootResource.headers().get("set-cookie");
-        String cookie = cookies.stream()
-                .map(c -> c.split(";")[0].trim())
-                .collect(Collectors.joining("; "));
-
-        HeadersInterceptor requestInterceptor = new HeadersInterceptor(cookie);
-
+        HeadersInterceptor requestInterceptor = new HeadersInterceptor();
         ObjectMapper mapper = new ObjectMapper();
         mapper.setConfig(mapper.getDeserializationConfig()
                 .withHandler(new SearchResponseInstantiationProblemHandler()));
@@ -60,11 +44,6 @@ public class FeignTicketSearchServiceBuilder {
 
 
     private static class HeadersInterceptor implements RequestInterceptor {
-        private final String cookie;
-
-        public HeadersInterceptor(String cookie) {
-            this.cookie = cookie;
-        }
 
         @Override
         public void apply(RequestTemplate template) {
@@ -73,7 +52,6 @@ public class FeignTicketSearchServiceBuilder {
             template.header("Content-Type", "application/x-www-form-urlencoded");
             template.header("GV-Referer", Apis.BASE_URL);
             template.header("Referer", Apis.BASE_URL);
-            template.header("Cookie", cookie);
             template.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             template.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
         }
