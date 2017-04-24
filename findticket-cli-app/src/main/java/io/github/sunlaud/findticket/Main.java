@@ -23,13 +23,18 @@ public class Main {
     }
 
     private void run() {
-            List<Station> from = trainSearchService.findStations("Дніпропетровськ-Голов");
-            System.out.println(from);
-            List<Station> till = trainSearchService.findStations("Одеса");
-            System.out.println(till);
+            List<Station> fromAll = trainSearchService.findStations("Запоріжжя 1");
+            System.out.println(fromAll);
+            List<Station> tillAll = trainSearchService.findStations("Хмельницький");
+            System.out.println(tillAll);
             LocalDateTime departure = LocalDate.now().plusDays(10).atStartOfDay();
+            departure = LocalDate.of(2017, 5, 18).atStartOfDay();
+//            departure = LocalDate.of(2017, 5, 21).atStartOfDay();
         try {
-            List<Train> trains = trainSearchService.findTrains(from.get(0), till.get(0), departure);
+            Station from = fromAll.get(0);
+            Station till = tillAll.get(0);
+            List<Train> trains = trainSearchService.findTrains(from, till, departure);
+            System.out.println(String.format("Trains travelling %s -> %s:", from.getName(), till.getName()));
             trains.forEach(this::printTrainInfo);
         } catch (Exception ex) {
             log.error("Error searching trains:", ex);
@@ -49,8 +54,9 @@ public class Main {
         sb.append(train.getDepartureDate().format(HUMAN_READABLE) + " -> ");
         sb.append(train.getArrivalDate().format(HUMAN_READABLE) + ", ");
         sb.append(String.format("%sh%sm, ", train.getTravelTime().toHours(), train.getTravelTime().minusHours(train.getTravelTime().toHours()).toMinutes()));
-        sb.append(train.getStationFrom().getName() + " -> " + train.getStationTill().getName() + ")");
-
+        sb.append(train.getRouteStartStationName() + " - " + train.getRouteEndStationName() + ")");
         System.out.println(sb.toString());
+
+        //System.out.println(trainSearchService.getCoaches(train));
     }
 }

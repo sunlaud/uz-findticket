@@ -29,12 +29,12 @@ public class Mappers {
                 .byDefault()
                 .register();
         mapperFactory.classMap(TrainDto.class, Train.class)
-                .field("from.station", "stationFrom.name")
-                .field("from.stationId", "stationFrom.id")
+                .field("from.stationName", "stationFrom.name")
                 .field("from.date", "departureDate")
-                .field("till.station", "stationTill.name")
-                .field("till.stationId", "stationTill.id")
+                .field("till.stationName", "stationTill.name")
                 .field("till.date", "arrivalDate")
+                .field("from.stationName", "routeStartStationName")
+                .field("till.stationName", "routeEndStationName")
                 .exclude("travelTime")
                 .byDefault()
                 .customize(

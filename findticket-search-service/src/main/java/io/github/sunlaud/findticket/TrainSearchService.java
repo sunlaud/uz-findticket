@@ -3,10 +3,12 @@ package io.github.sunlaud.findticket;
 import io.github.sunlaud.findticket.api.Station;
 import io.github.sunlaud.findticket.api.Train;
 import io.github.sunlaud.findticket.api.TrainRoute;
+import io.github.sunlaud.findticket.client.uz.dto.CoachDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface TrainSearchService {
     /**
@@ -22,4 +24,6 @@ public interface TrainSearchService {
     List<Station> findStations(String prefix);
 
     List<Train> findTrains(Station from, Station till, LocalDateTime departure);
+
+    Map<String, List<CoachDto>> getCoaches(Train train);
 }

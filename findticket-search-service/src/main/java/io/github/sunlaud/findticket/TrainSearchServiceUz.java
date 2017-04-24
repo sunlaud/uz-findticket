@@ -1,11 +1,15 @@
 package io.github.sunlaud.findticket;
 
+import io.github.sunlaud.findticket.api.SeatsSummary;
 import io.github.sunlaud.findticket.api.Station;
 import io.github.sunlaud.findticket.api.Train;
 import io.github.sunlaud.findticket.api.TrainRoute;
+import io.github.sunlaud.findticket.client.uz.dto.CoachDto;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
 import io.github.sunlaud.findticket.client.uz.request.FindTrainRequest;
+import io.github.sunlaud.findticket.client.uz.request.GetCoachesRequest;
+import io.github.sunlaud.findticket.client.uz.response.GetCoachesResponse;
 import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
 import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
 import io.github.sunlaud.findticket.client.uz.service.impl.feign.FeignTicketSearchServiceBuilder;
@@ -17,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,14 +53,15 @@ public class TrainSearchServiceUz implements TrainSearchService {
                 .map(trainDto ->
                         TrainRoute.builder()
                                 .trainID(trainDto.getNumber())
-                                .fromStation(new Station(
-                                        trainDto.getFrom().getStation(),
-                                        trainDto.getFrom().getStationId()
-                                ))
-                                .toStation(new Station(
-                                        trainDto.getTill().getStation(),
-                                        trainDto.getTill().getStationId()
-                                ))
+                                //TODO adjust to new API which lacks station_id in from/till fields in trainDto
+//                                .fromStation(new Station(
+//                                        trainDto.getFrom().getStation(),
+//                                        trainDto.getFrom().getStationId()
+//                                ))
+//                                .toStation(new Station(
+//                                        trainDto.getTill().getStation(),
+//                                        trainDto.getTill().getStationId()
+//                                ))
                                 .arriveAt(trainDto.getTill().getDate())
                                 .departureAt(trainDto.getFrom().getDate())
                                 .build())
@@ -80,26 +86,36 @@ public class TrainSearchServiceUz implements TrainSearchService {
                 .stationIdTill(till.getId())
                 .build();
         SearchResponse<List<TrainDto>> response = api.findTrains(request);
-        return Mappers.get().mapAsList(response.getValue(), Train.class);
+        List<Train> trains = Mappers.get().mapAsList(response.getValue(), Train.class);
+
+        //hack - fill in stations coz UZ suddenly changed contract and now it sends only name in TrainDto,
+        //besides that name is actually the name of train start/end station, which may not be the same as requested station
+        trains.forEach(train -> {
+            train.setStationFrom(from);
+            train.setStationTill(till);
+        });
+        return trains;
     }
 
 
-//                            Map<String, List<CoachDto>> coaches = train.getFreeSeats().stream()
-//                                    .map(FreeSeatsDto::getLetter)
-//                                    .map(coachType -> getCoaches(service, train, coachType))
-//                                    .flatMap(c -> c.getCoaches().stream())
-//                                    .collect(Collectors.groupingBy(CoachDto::getType));
-/*
-    private GetCoachesResponse getCoaches(UzTrainSearchClient service, TrainDto train, String coachType) {
+    @Override
+    public Map<String, List<CoachDto>> getCoaches(Train train) {
+        Map<String, List<CoachDto>> coaches = train.getFreeSeats().stream()
+                .map(SeatsSummary::getLetter)
+                .map(coachType -> getCoaches(train, coachType))
+                .flatMap(c -> c.getCoaches().stream())
+                .collect(Collectors.groupingBy(CoachDto::getType));
+        return coaches;
+    }
+
+    private GetCoachesResponse getCoaches(Train train, String coachType) {
         GetCoachesRequest getCoachesRequest = GetCoachesRequest.builder()
-                .stationIdFrom(train.getFrom().getStationId())
-                .stationIdTill(train.getTill().getStationId())
+                .stationIdFrom(train.getStationFrom().getId())
+                .stationIdTill(train.getStationTill().getId())
                 .trainNumber(train.getNumber())
-                .departureDateAsEpochSecond(train.getFrom().getDateAsEpochSecond())
+                .departureDate(train.getDepartureDate())
                 .coachType(coachType)
                 .build();
-        return service.getCoaches(getCoachesRequest);
+        return api.getCoaches(getCoachesRequest);
     }
-*/
-
 }

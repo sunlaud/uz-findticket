@@ -13,6 +13,9 @@ public class Train {
     private Station stationFrom;
     private Station stationTill;
 
+    private String routeStartStationName;
+    private String routeEndStationName;
+
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
 
