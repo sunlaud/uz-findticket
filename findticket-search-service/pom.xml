@@ -16,9 +16,14 @@
             <groupId>io.github.sunlaud.findticket</groupId>
             <artifactId>findticket-uz-client</artifactId>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>fr.xebia.extras</groupId>-->
+            <!--<artifactId>selma-processor</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>ma.glasnost.orika</groupId>
-            <artifactId>orika-core</artifactId>
+            <groupId>fr.xebia.extras</groupId>
+            <artifactId>selma</artifactId>
         </dependency>
     </dependencies>
 

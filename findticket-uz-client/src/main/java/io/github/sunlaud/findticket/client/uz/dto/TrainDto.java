@@ -41,4 +41,8 @@ public class TrainDto {
     public Duration getTravelTime() {
         return Duration.ofSeconds(travelTime.toSecondOfDay());
     }
+
+    public String getName() {
+        return from.getStationName() + " - " + till.getStationName();
+    }
 }

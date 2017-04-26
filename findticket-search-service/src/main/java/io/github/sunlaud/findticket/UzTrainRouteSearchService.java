@@ -1,5 +1,6 @@
 package io.github.sunlaud.findticket;
 
+import com.google.common.collect.Lists;
 import io.github.sunlaud.findticket.api.Station;
 import io.github.sunlaud.findticket.api.TransportRoute;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
@@ -25,7 +26,7 @@ public class UzTrainRouteSearchService implements RouteSearchService {
     @Override
     public List<Station> findStations(String nameSubstring) {
         List<StationDto> response = api.findStations(nameSubstring);
-        return Mappers.get().mapAsList(response, Station.class);
+        return Lists.transform(response, Mappers.get().getStationMapper()::fromDto);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class UzTrainRouteSearchService implements RouteSearchService {
                 .build();
 
         SearchResponse<List<TrainDto>> response = api.findTrains(request);
-        List<TransportRoute> routes = Mappers.get().mapAsList(response.getValue(), TransportRoute.class);
+        List<TransportRoute> routes = Lists.transform(response.getValue(), Mappers.get().getRouteMapper()::fromDto);
         routes.forEach(route -> {
             route.setFrom(stationFrom);
             route.setTill(stationTo);

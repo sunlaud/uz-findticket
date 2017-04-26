@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class Station {
     private String name;
     private int id;

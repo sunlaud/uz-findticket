@@ -1,26 +1,30 @@
 package io.github.sunlaud.findticket.util;
 
-import io.github.sunlaud.findticket.api.SeatsSummary;
-import io.github.sunlaud.findticket.api.Station;
-import io.github.sunlaud.findticket.api.TransportRoute;
-import io.github.sunlaud.findticket.client.uz.dto.FreeSeatsDto;
-import io.github.sunlaud.findticket.client.uz.dto.StationDto;
-import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
-import ma.glasnost.orika.CustomMapper;
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-
-import java.time.LocalDateTime;
+import fr.xebia.extras.selma.Selma;
+import io.github.sunlaud.findticket.util.mappers.HandMadeStationMapper;
+import io.github.sunlaud.findticket.util.mappers.HandMadeTransportRouteMapper;
+import io.github.sunlaud.findticket.util.mappers.StationMapper;
+import io.github.sunlaud.findticket.util.mappers.TransportRouteMapper;
+import lombok.Getter;
 
 public class Mappers {
+    private static final boolean USE_SELMA = false; //for now Selma doesn't play well with lombok
     private static final Mappers INSTANCE = new Mappers();
-    private final MapperFactory mapperFactory;
+    @Getter
+    private final StationMapper stationMapper;
+    @Getter
+    private final TransportRouteMapper routeMapper;
 
     public Mappers() {
-        mapperFactory = new DefaultMapperFactory.Builder().build();
+        if (USE_SELMA) {
+            stationMapper = Selma.getMapper(StationMapper.class);
+            routeMapper = Selma.getMapper(TransportRouteMapper.class);
+        } else {
+            stationMapper = new HandMadeStationMapper();
+            routeMapper = new HandMadeTransportRouteMapper();
+        }
+    }
+/*        mapperFactory = new DefaultMapperFactory.Builder().build();
         mapperFactory.classMap(StationDto.class, Station.class)
                 .byDefault()
                 .field("name", "name")
@@ -47,8 +51,9 @@ public class Mappers {
         mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDateTime.class));
 
     }
+*/
 
-    public static MapperFacade get() {
-        return INSTANCE.mapperFactory.getMapperFacade();
+    public static Mappers get() {
+        return INSTANCE;
     }
 }
