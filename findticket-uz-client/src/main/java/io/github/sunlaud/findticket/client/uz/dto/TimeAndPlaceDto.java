@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeAndPlaceDto {
-    /** this is actually the station where train starts (may be not the station in search request) */
+    /** this is actually the train start/end station (may be not the station in search request) */
     @JsonProperty("station")
     private String stationName;
 

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SeatsSummary {
-    private String letter;
+    private String id;
+    private String name;
     private int places;
-    private String title;
 }

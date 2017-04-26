@@ -15,5 +15,5 @@ public class FreeSeatsDto {
     private Integer places;
 
     @JsonProperty("title")
-    private String title;
+    private String name;
 }

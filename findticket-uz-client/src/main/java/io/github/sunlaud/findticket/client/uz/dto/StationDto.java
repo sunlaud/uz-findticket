@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class StationDto {
     @JsonProperty("label")
-    private String title;
+    private String name;
 
     @JsonProperty("value")
     private int id;

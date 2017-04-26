@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import com.google.common.base.MoreObjects;
 import lombok.Data;
 
 import java.time.Duration;
@@ -20,7 +19,7 @@ public class TrainDto {
     private static final String TIME_FORMAT = "HH:mm";
 
     @JsonProperty("num")
-    private String number;
+    private String id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
     @JsonProperty("travel_time")
@@ -28,9 +27,11 @@ public class TrainDto {
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime travelTime;
 
+    /** this is actually the train start station (may be not the station in search request) */
     @JsonProperty("from")
     private TimeAndPlaceDto from;
 
+    /** this is actually the train end station (may be not the station in search request) */
     @JsonProperty("till")
     private TimeAndPlaceDto till;
 
@@ -39,15 +40,5 @@ public class TrainDto {
 
     public Duration getTravelTime() {
         return Duration.ofSeconds(travelTime.toSecondOfDay());
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("number", number)
-                .add("from", from)
-                .add("till", till)
-                .add("travelTime", travelTime)
-                .toString();
     }
 }

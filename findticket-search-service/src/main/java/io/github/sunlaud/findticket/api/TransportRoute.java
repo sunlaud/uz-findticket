@@ -6,15 +6,16 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Train/airline/bus route from station A to station B
+ */
 @Data
-public class Train {
-    private String number;
+public class TransportRoute {
+    private String id;
+    private String name;
 
-    private Station stationFrom;
-    private Station stationTill;
-
-    private String routeStartStationName;
-    private String routeEndStationName;
+    private Station from;
+    private Station till;
 
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;

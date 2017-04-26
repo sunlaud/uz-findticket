@@ -1,11 +1,11 @@
 package io.github.sunlaud.findticket.util;
 
+import io.github.sunlaud.findticket.api.SeatsSummary;
+import io.github.sunlaud.findticket.api.Station;
+import io.github.sunlaud.findticket.api.TransportRoute;
 import io.github.sunlaud.findticket.client.uz.dto.FreeSeatsDto;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
-import io.github.sunlaud.findticket.api.SeatsSummary;
-import io.github.sunlaud.findticket.api.Station;
-import io.github.sunlaud.findticket.api.Train;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -23,23 +23,22 @@ public class Mappers {
         mapperFactory = new DefaultMapperFactory.Builder().build();
         mapperFactory.classMap(StationDto.class, Station.class)
                 .byDefault()
-                .field("title", "name")
+                .field("name", "name")
                 .register();
         mapperFactory.classMap(FreeSeatsDto.class, SeatsSummary.class)
                 .byDefault()
                 .register();
-        mapperFactory.classMap(TrainDto.class, Train.class)
-                .field("from.stationName", "stationFrom.name")
+        mapperFactory.classMap(TrainDto.class, TransportRoute.class)
+                .field("from.stationName", "from.name")
                 .field("from.date", "departureDate")
-                .field("till.stationName", "stationTill.name")
+                .field("till.stationName", "till.name")
                 .field("till.date", "arrivalDate")
-                .field("from.stationName", "routeStartStationName")
-                .field("till.stationName", "routeEndStationName")
                 .exclude("travelTime")
                 .byDefault()
                 .customize(
-                        new CustomMapper<TrainDto, Train>() {
-                            public void mapAtoB(TrainDto src, Train target, MappingContext context) {
+                        new CustomMapper<TrainDto, TransportRoute>() {
+                            public void mapAtoB(TrainDto src, TransportRoute target, MappingContext context) {
+                                target.setName(src.getFrom().getStationName() + " - " + src.getTill().getStationName());
                                 target.setTravelTime(src.getTravelTime());
                             }
                         })
