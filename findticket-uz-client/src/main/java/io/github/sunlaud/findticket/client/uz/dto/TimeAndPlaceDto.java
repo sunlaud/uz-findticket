@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.joda.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.Instant;
+import org.joda.time.LocalDateTime;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,7 +36,7 @@ public class TimeAndPlaceDto {
     private long dateAsEpochSecond;
 
     private Instant getDateAsInstant() {
-        return Instant.ofEpochSecond(dateAsEpochSecond);
+        return new Instant(dateAsEpochSecond * DateTimeConstants.MILLIS_PER_SECOND);
     }
 
     @Override

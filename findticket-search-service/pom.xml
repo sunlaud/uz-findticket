@@ -16,6 +16,10 @@
             <groupId>io.github.sunlaud.findticket</groupId>
             <artifactId>findticket-uz-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>fr.xebia.extras</groupId>-->
             <!--<artifactId>selma-processor</artifactId>-->

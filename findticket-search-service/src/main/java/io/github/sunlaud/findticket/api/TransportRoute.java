@@ -1,9 +1,9 @@
 package io.github.sunlaud.findticket.api;
 
 import lombok.Data;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

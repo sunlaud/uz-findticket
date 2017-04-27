@@ -2,6 +2,8 @@ package io.github.sunlaud.findticket.client.uz.response.deserialize;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import io.github.sunlaud.findticket.client.uz.response.ErrorSearchResponse;
 import io.github.sunlaud.findticket.client.uz.response.FindTrainResponse;
 import org.junit.Test;
@@ -12,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertFalse;
@@ -45,8 +46,9 @@ public class SearchResponseInstantiationProblemHandlerTest {
         mapper.setConfig(mapper.getDeserializationConfig().withHandler(handler));
         Object response = mapper.readValue(is, expectedClass);
         assertThat(response, instanceOf(expectedClass));
-        boolean allFieldsAreNull = Arrays.stream(response.getClass().getDeclaredFields())
-                .allMatch(Objects::isNull);
+
+
+        boolean allFieldsAreNull = Iterables.all(Arrays.asList(response.getClass().getDeclaredFields()), Predicates.isNull());
         assertFalse("Deserialized object should have not null fields", allFieldsAreNull);
     }
 }

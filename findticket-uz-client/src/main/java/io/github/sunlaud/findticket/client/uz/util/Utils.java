@@ -2,6 +2,9 @@ package io.github.sunlaud.findticket.client.uz.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
@@ -31,8 +34,12 @@ public class Utils {
     public static String asUrlEncodedString(Object object) {
         String objectAsString = OBJECT_MAPPER.writeValueAsString(object);
         Map<?, ?> objectAsMap = OBJECT_MAPPER.readValue(objectAsString, Map.class);
-        return objectAsMap.entrySet().stream()
-                .map(e -> URLEncoder.encode(String.valueOf(e.getKey())) + "=" + URLEncoder.encode(String.valueOf(e.getValue())))
-                .collect(Collectors.joining("&"));
+
+        return Joiner.on("&").join(Iterables.transform(objectAsMap.entrySet(), new Function<Map.Entry<?,?>, String>() {
+            @Override
+            public String apply(Map.Entry<?, ?> e) {
+                return URLEncoder.encode(String.valueOf(e.getKey())) + "=" + URLEncoder.encode(String.valueOf(e.getValue()));
+            }
+        }));
     }
 }

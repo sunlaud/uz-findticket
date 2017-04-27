@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.fasterxml.jackson.datatype.joda.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.joda.ser.LocalTimeSerializer;
 import lombok.Data;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -39,7 +40,7 @@ public class TrainDto {
     private List<FreeSeatsDto> freeSeats;
 
     public Duration getTravelTime() {
-        return Duration.ofSeconds(travelTime.toSecondOfDay());
+        return Duration.standardSeconds(travelTime.get(DateTimeFieldType.secondOfDay()));
     }
 
     public String getName() {

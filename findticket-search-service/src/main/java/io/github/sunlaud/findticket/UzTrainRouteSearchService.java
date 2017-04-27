@@ -1,5 +1,6 @@
 package io.github.sunlaud.findticket;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import io.github.sunlaud.findticket.api.Station;
 import io.github.sunlaud.findticket.api.TransportRoute;
@@ -11,8 +12,8 @@ import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
 import io.github.sunlaud.findticket.client.uz.service.impl.feign.FeignTicketSearchServiceBuilder;
 import io.github.sunlaud.findticket.util.Mappers;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalDateTime;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +27,12 @@ public class UzTrainRouteSearchService implements RouteSearchService {
     @Override
     public List<Station> findStations(String nameSubstring) {
         List<StationDto> response = api.findStations(nameSubstring);
-        return Lists.transform(response, Mappers.get().getStationMapper()::fromDto);
+        return Lists.transform(response, new Function<StationDto, Station>() {
+            @Override
+            public Station apply(StationDto dto) {
+                return Mappers.get().getStationMapper().fromDto(dto);
+            }
+        });
     }
 
     @Override
@@ -39,11 +45,16 @@ public class UzTrainRouteSearchService implements RouteSearchService {
                 .build();
 
         SearchResponse<List<TrainDto>> response = api.findTrains(request);
-        List<TransportRoute> routes = Lists.transform(response.getValue(), Mappers.get().getRouteMapper()::fromDto);
-        routes.forEach(route -> {
+        List<TransportRoute> routes = Lists.transform(response.getValue(), new Function<TrainDto, TransportRoute>() {
+            @Override
+            public TransportRoute apply(TrainDto dto) {
+                return Mappers.get().getRouteMapper().fromDto(dto);
+            }
+        });
+        for (TransportRoute route : routes) {
             route.setFrom(stationFrom);
             route.setTill(stationTo);
-        });
+        }
         return routes;
     }
 
