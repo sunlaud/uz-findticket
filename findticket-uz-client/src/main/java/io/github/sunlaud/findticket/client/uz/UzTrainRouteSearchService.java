@@ -1,16 +1,17 @@
-package io.github.sunlaud.findticket;
+package io.github.sunlaud.findticket.client.uz;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import io.github.sunlaud.findticket.api.Station;
-import io.github.sunlaud.findticket.api.TransportRoute;
+import io.github.sunlaud.findticket.RouteSearchService;
+import io.github.sunlaud.findticket.client.uz.client.UzTicketSearchClient;
+import io.github.sunlaud.findticket.client.uz.client.impl.feign.FeignUzTicketSearchClientBuilder;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
+import io.github.sunlaud.findticket.client.uz.mapper.Mappers;
 import io.github.sunlaud.findticket.client.uz.request.FindTrainRequest;
 import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
-import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
-import io.github.sunlaud.findticket.client.uz.service.impl.feign.FeignTicketSearchServiceBuilder;
-import io.github.sunlaud.findticket.util.Mappers;
+import io.github.sunlaud.findticket.model.Station;
+import io.github.sunlaud.findticket.model.TransportRoute;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 
@@ -18,15 +19,15 @@ import java.util.List;
 
 @Slf4j
 public class UzTrainRouteSearchService implements RouteSearchService {
-    private final UzTicketSearchService api;
+    private final UzTicketSearchClient api;
 
     public UzTrainRouteSearchService() {
-        api = FeignTicketSearchServiceBuilder.getTicketSearchService();
+        api = FeignUzTicketSearchClientBuilder.getTicketSearchService();
     }
 
     @Override
-    public List<Station> findStations(String nameSubstring) {
-        List<StationDto> response = api.findStations(nameSubstring);
+    public List<Station> findStations(String namePrefix) {
+        List<StationDto> response = api.findStations(namePrefix);
         return Lists.transform(response, new Function<StationDto, Station>() {
             @Override
             public Station apply(StationDto dto) {
@@ -40,8 +41,8 @@ public class UzTrainRouteSearchService implements RouteSearchService {
         FindTrainRequest request = FindTrainRequest.builder()
                 .departureDate(departureDate.toLocalDate())
                 .departureTime(departureDate.toLocalTime())
-                .stationIdFrom(stationFrom.getId())
-                .stationIdTill(stationTo.getId())
+                .stationIdFrom(Integer.parseInt(stationFrom.getId()))
+                .stationIdTill(Integer.parseInt(stationTo.getId()))
                 .build();
 
         SearchResponse<List<TrainDto>> response = api.findTrains(request);
@@ -61,7 +62,7 @@ public class UzTrainRouteSearchService implements RouteSearchService {
 //
 //    @Override
 //    public Map<String, List<CoachDto>> getCoaches(Train train) {
-//        Map<String, List<CoachDto>> coaches = train.getFreeSeats().stream()
+//        Map<String, List<CoachDto>> coaches = train.getFreeSeatsCountByType().stream()
 //                .map(SeatsSummary::getId)
 //                .map(coachType -> getCoaches(train, coachType))
 //                .flatMap(c -> c.getCoaches().stream())
@@ -77,6 +78,6 @@ public class UzTrainRouteSearchService implements RouteSearchService {
 //                .departureDate(train.getDepartureDate())
 //                .coachType(coachType)
 //                .build();
-//        return api.getCoaches(getCoachesRequest);
+//        return model.getCoaches(getCoachesRequest);
 //    }
 }

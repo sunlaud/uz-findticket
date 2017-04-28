@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.client.uz;
+package io.github.sunlaud.findticket.client.uz.client;
 
 
 public class Apis {

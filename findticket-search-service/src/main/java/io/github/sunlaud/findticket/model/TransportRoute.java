@@ -1,10 +1,10 @@
-package io.github.sunlaud.findticket.api;
+package io.github.sunlaud.findticket.model;
 
 import lombok.Data;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Train/airline/bus route from station A to station B
@@ -21,5 +21,5 @@ public class TransportRoute {
     private LocalDateTime arrivalDate;
 
     private Duration travelTime;
-    private List<SeatsSummary> freeSeats;
+    private Map<SeatType, Integer> freeSeatsCountByType;
 }

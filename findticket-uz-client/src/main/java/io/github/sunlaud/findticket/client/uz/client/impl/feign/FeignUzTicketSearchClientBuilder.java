@@ -1,4 +1,4 @@
-package io.github.sunlaud.findticket.client.uz.service.impl.feign;
+package io.github.sunlaud.findticket.client.uz.client.impl.feign;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,9 +14,9 @@ import feign.jackson.JacksonDecoder;
 import feign.jaxrs.JAXRSContract;
 import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
-import io.github.sunlaud.findticket.client.uz.Apis;
+import io.github.sunlaud.findticket.client.uz.client.Apis;
 import io.github.sunlaud.findticket.client.uz.response.deserialize.SearchResponseInstantiationProblemHandler;
-import io.github.sunlaud.findticket.client.uz.service.UzTicketSearchService;
+import io.github.sunlaud.findticket.client.uz.client.UzTicketSearchClient;
 import io.github.sunlaud.findticket.client.uz.util.Utils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,14 +32,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Slf4j
-public class FeignTicketSearchServiceBuilder {
+public class FeignUzTicketSearchClientBuilder {
 
     private static final boolean USE_CACHE = false;
 
-    public static UzTicketSearchService getTicketSearchService() {
+    public static UzTicketSearchClient getTicketSearchService() {
 //        Client client = new Client.Default(null, null);
         final File cacheRootDir = new File("/tmp/uz-findtiket/cache");
         okhttp3.OkHttpClient.Builder clientBuilder = new okhttp3.OkHttpClient.Builder();
@@ -128,7 +127,7 @@ public class FeignTicketSearchServiceBuilder {
     }
 
     @SneakyThrows
-    public static UzTicketSearchService getTicketSearchService(Client client) {
+    public static UzTicketSearchClient getTicketSearchService(Client client) {
         HeadersInterceptor requestInterceptor = new HeadersInterceptor();
         ObjectMapper mapper = new ObjectMapper();
         mapper.setConfig(mapper.getDeserializationConfig()
@@ -143,7 +142,7 @@ public class FeignTicketSearchServiceBuilder {
                 .requestInterceptor(requestInterceptor)
                 .errorDecoder(new IllegalArgumentExceptionOn503Decoder())
                 .client(client)
-                .target(UzTicketSearchService.class, Apis.BASE_URL);
+                .target(UzTicketSearchClient.class, Apis.BASE_URL);
     }
 
 

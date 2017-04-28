@@ -1,16 +1,12 @@
 package io.github.sunlaud.findticket;
 
-import io.github.sunlaud.findticket.api.Station;
-import io.github.sunlaud.findticket.api.TransportRoute;
+import io.github.sunlaud.findticket.model.Station;
+import io.github.sunlaud.findticket.model.TransportRoute;
 import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
 public interface RouteSearchService {
-    /**
-     * Available routes to station at given date.
-     */
     Iterable<TransportRoute> findRoutes(Station stationFrom, Station stationTo, LocalDateTime departureDate);
-
-    List<Station> findStations(String nameSubstring);
+    List<Station> findStations(String namePrefix);
 }

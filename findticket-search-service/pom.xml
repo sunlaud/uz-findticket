@@ -13,10 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.sunlaud.findticket</groupId>
-            <artifactId>findticket-uz-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>

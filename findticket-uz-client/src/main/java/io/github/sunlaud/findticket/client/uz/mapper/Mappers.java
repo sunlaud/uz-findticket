@@ -1,10 +1,6 @@
-package io.github.sunlaud.findticket.util;
+package io.github.sunlaud.findticket.client.uz.mapper;
 
 import fr.xebia.extras.selma.Selma;
-import io.github.sunlaud.findticket.util.mappers.HandMadeStationMapper;
-import io.github.sunlaud.findticket.util.mappers.HandMadeTransportRouteMapper;
-import io.github.sunlaud.findticket.util.mappers.StationMapper;
-import io.github.sunlaud.findticket.util.mappers.TransportRouteMapper;
 import lombok.Getter;
 
 public class Mappers {

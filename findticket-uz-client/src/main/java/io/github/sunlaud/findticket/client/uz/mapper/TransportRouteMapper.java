@@ -1,12 +1,9 @@
-package io.github.sunlaud.findticket.util.mappers;
+package io.github.sunlaud.findticket.client.uz.mapper;
 
 import fr.xebia.extras.selma.Field;
 import fr.xebia.extras.selma.Mapper;
-import fr.xebia.extras.selma.Maps;
-import io.github.sunlaud.findticket.api.SeatsSummary;
-import io.github.sunlaud.findticket.api.TransportRoute;
-import io.github.sunlaud.findticket.client.uz.dto.FreeSeatsDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
+import io.github.sunlaud.findticket.model.TransportRoute;
 
 import static fr.xebia.extras.selma.IgnoreMissing.DESTINATION;
 
@@ -17,15 +14,10 @@ import static fr.xebia.extras.selma.IgnoreMissing.DESTINATION;
                 @Field({"till.date","arrivalDate"})
         },
         withIgnoreFields = {
-                "io.github.sunlaud.findticket.api.TransportRoute.from",
-                "io.github.sunlaud.findticket.api.TransportRoute.till"
+                "io.github.sunlaud.findticket.model.TransportRoute.from",
+                "io.github.sunlaud.findticket.model.TransportRoute.till"
         }
 )
 public interface TransportRouteMapper {
     TransportRoute fromDto(TrainDto dto);
-
-    @Maps(withCustomFields = {
-            @Field({"stationName", "name"})
-    })
-    SeatsSummary fromFreeSeatsDto(FreeSeatsDto dto);
 }

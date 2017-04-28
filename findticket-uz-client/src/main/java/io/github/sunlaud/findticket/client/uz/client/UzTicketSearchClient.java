@@ -1,6 +1,5 @@
-package io.github.sunlaud.findticket.client.uz.service;
+package io.github.sunlaud.findticket.client.uz.client;
 
-import io.github.sunlaud.findticket.client.uz.Apis;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
 import io.github.sunlaud.findticket.client.uz.dto.TrainDto;
 import io.github.sunlaud.findticket.client.uz.request.FindTrainRequest;
@@ -15,7 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 
-public interface UzTicketSearchService {
+public interface UzTicketSearchClient {
     @POST
     @Path(Apis.FIND_STATIONS_URL)
     List<StationDto> findStations(@QueryParam("term") String stationNameFirstLetters);
