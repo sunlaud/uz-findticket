@@ -15,6 +15,7 @@ import io.github.sunlaud.findticket.model.TransportRoute;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,15 +47,12 @@ public class UzTrainRouteSearchService implements RouteSearchService {
                 .build();
 
         SearchResponse<List<TrainDto>> response = api.findTrains(request);
-        List<TransportRoute> routes = Lists.transform(response.getValue(), new Function<TrainDto, TransportRoute>() {
-            @Override
-            public TransportRoute apply(TrainDto dto) {
-                return Mappers.get().getRouteMapper().fromDto(dto);
-            }
-        });
-        for (TransportRoute route : routes) {
+        List<TransportRoute> routes = new ArrayList<>(response.getValue().size());
+        for (TrainDto trainDto : response.getValue()) {
+            TransportRoute route = Mappers.get().getRouteMapper().fromDto(trainDto);
             route.setFrom(stationFrom);
             route.setTill(stationTo);
+            routes.add(route);
         }
         return routes;
     }
