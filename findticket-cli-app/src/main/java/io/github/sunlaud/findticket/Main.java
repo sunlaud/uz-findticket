@@ -17,11 +17,12 @@ import java.util.List;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.or;
 import static io.github.sunlaud.findticket.filtering.Filters.hasMoreThan;
+import static io.github.sunlaud.findticket.util.RouteFormatter.MULTI_LINE;
+import static io.github.sunlaud.findticket.util.RouteFormatter.stringifyRoutes;
 
 @Slf4j
 public class Main {
     private final RouteSearchService routeSearchService = new UzTrainRouteSearchService();
-    private static final RouteFormatter ROUTE_FORMATTER = new RouteFormatter();
 
     public static void main(String[] args) throws IOException {
         new Main().run();
@@ -52,9 +53,9 @@ public class Main {
             if (Iterables.isEmpty(routesFiltered)) {
                 System.out.println("no routes match criteria " + criteria + "\n");
             }
-            System.out.println(ROUTE_FORMATTER.stringifySearhcResult(routesFiltered));
+            System.out.println(stringifyRoutes(routesFiltered, MULTI_LINE));
             System.out.println(String.format("\n==== All routes %s -> %s: ====", from.getName(), till.getName()));
-            System.out.println(ROUTE_FORMATTER.stringifySearhcResult(routes));
+            System.out.println(stringifyRoutes(routes, MULTI_LINE));
         } catch (Exception ex) {
             log.error("Error searching trains:", ex);
             System.err.println("Error searching trains - " + ex.getMessage());
