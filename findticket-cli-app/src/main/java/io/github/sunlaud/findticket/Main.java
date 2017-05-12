@@ -2,6 +2,7 @@ package io.github.sunlaud.findticket;
 
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import io.github.sunlaud.findticket.client.uz.UzTrainRouteSearchService;
 import io.github.sunlaud.findticket.model.SeatType;
@@ -23,22 +24,23 @@ import static io.github.sunlaud.findticket.util.RouteFormatter.stringifyRoutes;
 @Slf4j
 public class Main {
     private final RouteSearchService routeSearchService = new UzTrainRouteSearchService();
+    private final TripPlanner tripPlanner = new TripPlanner(routeSearchService);
 
     public static void main(String[] args) throws IOException {
         new Main().run();
     }
 
     private void run() {
-            List<Station> fromAll = routeSearchService.findStations("Хмельницький");
+            List<Station> fromAll = routeSearchService.findStations("Дніпропетровськ-Голов.");
             System.out.println(fromAll);
-            List<Station> tillAll = routeSearchService.findStations("Запоріжжя 1");
+            List<Station> tillAll = routeSearchService.findStations("Львів");
             System.out.println(tillAll);
             LocalDateTime departure = LocalDate.now().plusDays(10).toDateTimeAtStartOfDay().toLocalDateTime();
-            departure = LocalDateTime.parse("2017-05-21T20:00");
+            departure = LocalDateTime.parse("2017-06-22T00:00");
         try {
             Station from = fromAll.get(0);
             Station till = tillAll.get(0);
-            Iterable<TransportRoute> routes = routeSearchService.findRoutes(from, till, departure);
+            Iterable<TransportRoute> routes = tripPlanner.findRoutes(from, till, departure, new DaysOffset(3, OffsetDirection.BACKWARD));
             LocalDateTime arrivalDateTime = LocalDateTime.parse("2017-05-19T08:30");
             Predicate<TransportRoute> criteria = and(
                     //arrivingBefore(arrivalDateTime),
@@ -47,6 +49,7 @@ public class Main {
                         hasMoreThan(17).freeSeatsWithTypeId(new SeatType("К"))
                     )
             );
+            criteria = Predicates.alwaysTrue();
             Iterable<TransportRoute> routesFiltered = Iterables.filter(routes, criteria);
 
             System.out.println(String.format("\n===== Filtered %s =====\n", LocalDateTime.now()));

@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class UzTrainRouteSearchService implements RouteSearchService {
     }
 
     @Override
-    public Iterable<TransportRoute> findRoutes(Station stationFrom, Station stationTo, LocalDateTime departureDate) {
+    public Collection<TransportRoute> findRoutes(Station stationFrom, Station stationTo, LocalDateTime departureDate) {
         FindTrainRequest request = FindTrainRequest.builder()
                 .departureDate(departureDate.toLocalDate())
                 .departureTime(departureDate.toLocalTime())

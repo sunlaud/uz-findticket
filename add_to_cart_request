@@ -1,0 +1,100 @@
+Add to cart:
+
+curl 'http://booking.uz.gov.ua/cart/add/' -H 'Accept: */*' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.5' -H 'Connection: keep-alive' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Cookie: _gv_lang=uk; _gv_sessid=teghsolcauvvdo6k1ijoj36021; _ga=GA1.3.83595431.1493467845; _gid=GA1.3.79464843.1493488114; HTTPSERVERID=server1; full-version=1' -H 'DNT: 1' -H 'GV-Ajax: 1' -H 'GV-Referer: http://booking.uz.gov.ua/' -H 'GV-Screen: 1366x768' -H 'Host: booking.uz.gov.ua' -H 'Referer: http://booking.uz.gov.ua/' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0' --data 'from=2210800&to=2200300&train=120%D0%9F&date=2017-05-18&round_trip=0&places[0][ord]=0&places[0][charline]=%D0%91&places[0][wagon_num]=10&places[0][wagon_class]=%D0%94&places[0][wagon_type]=%D0%9A&places[0][firstname]=%D0%9B%D1%8E%D0%B4%D0%BC%D0%B8%D0%BB%D0%B0&places[0][lastname]=%D0%9C%D1%96%D1%86%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B0&places[0][bedding]=1&places[0][services][0]=%D0%A8&places[0][child]=&places[0][stud]=&places[0][transportation]=0&places[0][reserve]=0&places[0][place_num]=25&places[1][ord]=1&places[1][charline]=%D0%91&places[1][wagon_num]=10&places[1][wagon_class]=%D0%94&places[1][wagon_type]=%D0%9A&places[1][firstname]=%D0%9D%D1%96%D0%BD%D0%B0&places[1][lastname]=%D0%94%D0%B5%D0%BC%D0%B8%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE&places[1][bedding]=1&places[1][services][0]=%D0%A8&places[1][child]=&places[1][stud]=&places[1][transportation]=0&places[1][reserve]=0&places[1][place_num]=27'
+
+
+
+
+
+
+
+Request headers
+
+POST /cart/add/ HTTP/1.1
+Host: booking.uz.gov.ua
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+GV-Ajax: 1
+GV-Referer: http://booking.uz.gov.ua/
+GV-Screen: 1366x768
+Referer: http://booking.uz.gov.ua/
+Content-Length: 900
+Cookie: _gv_lang=uk; _gv_sessid=teghsolcauvvdo6k1ijoj36021; _ga=GA1.3.83595431.1493467845; _gid=GA1.3.79464843.1493488114; HTTPSERVERID=server1; full-version=1
+DNT: 1
+Connection: keep-alive
+
+
+Response headers
+
+HTTP/1.1 200 OK
+Date: Sat, 29 Apr 2017 17:54:23 GMT
+Server: Apache
+Set-Cookie: _gv_lang=uk; expires=Fri, 28-Jul-2017 17:54:23 GMT; Max-Age=7776000; path=/
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, private
+Pragma: no-cache
+Uz-Txn: 493529852
+Vary: User-Agent
+X-UA-Compatible: IE=Edge,chrome=1
+Content-Length: 3905
+Content-Type: application/json
+Content-Language: ru
+
+
+Request POST params
+
+date=2017-05-18
+from=2210800
+places[0][bedding]=1
+places[0][charline]=Б
+places[0][child]=
+places[0][firstname]=Людмила
+places[0][lastname]=Міцинська
+places[0][ord]=0
+places[0][place_num]=25
+places[0][reserve]=0
+places[0][services][0]=Ш
+places[0][stud]=
+places[0][transportation]=0
+places[0][wagon_class]=Д
+places[0][wagon_num]=10
+places[0][wagon_type]=К
+places[1][bedding]=1
+places[1][charline]=Б
+places[1][child]=
+places[1][firstname]=Ніна
+places[1][lastname]=Демиденко
+places[1][ord]=1
+places[1][place_num]=27
+places[1][reserve]=0
+places[1][services][0]=Ш
+places[1][stud]=
+places[1][transportation]=0
+places[1][wagon_class]=Д
+places[1][wagon_num]=10
+places[1][wagon_type]=К
+round_trip=0
+to=2200300
+train=120П
+
+source:
+from=2210800&to=2200300&train=120%D0%9F&date=2017-05-18&round_trip=0&places[0][ord]=0&places[0][charline
+]=%D0%91&places[0][wagon_num]=10&places[0][wagon_class]=%D0%94&places[0][wagon_type]=%D0%9A&places[0
+][firstname]=%D0%9B%D1%8E%D0%B4%D0%BC%D0%B8%D0%BB%D0%B0&places[0][lastname]=%D0%9C%D1%96%D1%86%D0%B8
+%D0%BD%D1%81%D1%8C%D0%BA%D0%B0&places[0][bedding]=1&places[0][services][0]=%D0%A8&places[0][child]=&places
+[0][stud]=&places[0][transportation]=0&places[0][reserve]=0&places[0][place_num]=25&places[1][ord]=1
+&places[1][charline]=%D0%91&places[1][wagon_num]=10&places[1][wagon_class]=%D0%94&places[1][wagon_type
+]=%D0%9A&places[1][firstname]=%D0%9D%D1%96%D0%BD%D0%B0&places[1][lastname]=%D0%94%D0%B5%D0%BC%D0%B8%D0
+%B4%D0%B5%D0%BD%D0%BA%D0%BE&places[1][bedding]=1&places[1][services][0]=%D0%A8&places[1][child]=&places
+[1][stud]=&places[1][transportation]=0&places[1][reserve]=0&places[1][place_num]=27
+
+
+
+
+Response body:
+
+{"value":{"page":"<h3>Кошик<\/h3><table id=\"cart_table\" class=\"vToolsDataTable\" cellspacing=\"1\" cellpadding=\"0\" border=\"0\" width=\"100%\"><thead><tr><th class=\"num\">№<\/th><th class=\"data\">Місце<\/th><th class=\"price\">Ціна (грн.)<\/th><th class=\"cart-btn\"><\/th><\/tr><\/thead><tbody><tr _reserve_id=\"493529852\" _time=\"900\" data-doctype=\"1\" data-used-bonus=\"0\"><td class=\"num\">1<\/td><td class=\"data\"><div><span class=\"ticket-kinds tooltip\" data-tooltip=\"Цей посадочний документ є підставою для проїзду\"><i class=\"electronic-ticket\"><\/i><\/span>Поїзд: <b>120 П<\/b>, Вагон: <b>10К<\/b>, Мiсця:                                                                                                            <i class=\"full\"><\/i><b title=\"Повний\" class=\"ticket-kinds\">025<\/b><i class=\"full\"><\/i><b title=\"Повний\" class=\"ticket-kinds\">027<\/b><br\/><span>2017-05-18 12:20:00, Запоріжжя 1 &gt; Хмельницький, Проїзний                        <\/span><br\/><span>Постільна білизна,                                                            1 Чай                                                        <\/span><br\/><ul><li>Міцинська Людмила - Місце: 025                                <\/li><li>Демиденко Ніна - Місце: 027                                <\/li><\/ul><\/div><p>Залишилось часу:<br\/><b class=\"time-left\"><\/b><\/p><\/td><td class=\"price\">471,86<\/td><td class=\"cart-btn\"><a href=\"#\">Скасувати замовлення<\/a><\/td><\/tr><\/tbody><\/table><div class=\"ticket_kinds_info\"><div class=\"ticket-kind-list\"><span class=\"ticket-kinds\"><i class=\"electronic-ticket\"><\/i> — Посадочний документ, <\/span><span class=\"ticket-kinds\"><i class=\"non-electronic-ticket\"><\/i> — Бланк замовлення, <\/span><span class=\"ticket-kinds\"><i class=\"full\"><\/i> — Повний, <\/span><span class=\"ticket-kinds\"><i class=\"child\"><\/i> — Дитячий                    , <\/span><span class=\"ticket-kinds\"><i class=\"stud\"><\/i> — Студентський<\/span><\/div><button id=\"transportation_buy\">Купити перевізний документ<\/button><\/div><div class=\"clear\"><\/div><div class=\"buttons\"><button class=\"complex_btn\" onclick=\"ga('send', 'event', 'cart', 'pay');\"><b>471,86 грн<\/b><span>Оплатити<\/span><\/button><\/div><div class=\"clear\">&nbsp;<\/div><br\/><form class=\"cart_pay_form\" action=\"http:\/\/booking.uz.gov.ua\/cart\/pay\/\" name=\"cart_pay_form\" style=\"display: none;\" method=\"post\"><div class=\"text\" style=\"text-align: left; margin-bottom: 20px;\">Якщо Ви — наш постійний користувач, будь ласка, <a href=\"http:\/\/booking.uz.gov.ua\/authorization\/\" onclick=\"ga('send', 'event', 'pay_confirm', 'auth');\">авторизуйтесь<\/a>.&nbsp;Система автоматично буде використовувати дані, вказані у Вашому профілі.<\/div><label><span>Е-mail:<\/span><input name=\"email\" \/><\/label><label style=\"line-height:28px;\"><input style=\"width:25px;\" type=\"checkbox\" name=\"is_confirmed\" value=\"1\"\/><span style=\"width: 350px;\">Згода з&nbsp;<a target=\"_blank\" href=\"http:\/\/booking.uz.gov.ua\/info\/contractForm\/\">договором публічної оферти<\/a><\/span><\/label><br\/><button>Оплатити<\/button><\/form><div id=\"transportation_cont\" style=\"display: none;\"><\/div>","places_count":2,"analytics":{"1dbe4a2683c2949117889053d472f7d8":{"name":"travel","category":"2210800\/2200300\/2017-05-18","brand":"120П","quantity":2}}},"error":false,"data":null,"captcha":null}
+
