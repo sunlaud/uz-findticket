@@ -16,6 +16,10 @@ public class Filters {
         return new ComparablePredicateBuilder(amount);
     }
 
+    public static Predicate<TransportRoute> routeIdEqualTo(String routeId) {
+        return new RouteIdEqualTo(routeId);
+    }
+
 
     @Data
      public static class ComparablePredicateBuilder {
@@ -55,6 +59,21 @@ public class Filters {
         public boolean apply(TransportRoute route) {
             Integer freeSeatsCount = route.getFreeSeatsCountByType().get(seatType);
             return freeSeatsCount != null && freeSeatsCount > minFreeSetsCount;
+        }
+    }
+
+    @Data
+    private static class RouteIdEqualTo implements Predicate<TransportRoute> {
+        private final String routeId;
+
+        @Override
+        public String toString() {
+            return "route id == '" + routeId + "'";
+        }
+
+        @Override
+        public boolean apply(TransportRoute route) {
+            return route.getId().equals(routeId);
         }
     }
 }
