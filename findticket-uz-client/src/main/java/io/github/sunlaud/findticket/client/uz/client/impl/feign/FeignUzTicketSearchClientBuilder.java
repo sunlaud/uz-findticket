@@ -36,7 +36,7 @@ import java.util.Map;
 @Slf4j
 public class FeignUzTicketSearchClientBuilder {
 
-    private static final boolean USE_CACHE = true;
+    private static final boolean USE_CACHE = false;
 
     public static UzTicketSearchClient getTicketSearchService() {
 //        Client client = new Client.Default(null, null);
