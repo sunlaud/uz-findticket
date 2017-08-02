@@ -1,0 +1,26 @@
+{
+  "id" : "c365afca-9efa-48be-a507-5c07948642e9",
+  "name" : "purchase_station",
+  "request" : {
+    "url" : "/purchase/station/?term=%D0%9B%D1%8C%D0%B2%D1%96%D0%B2",
+    "method" : "POST"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "[{\"title\":\"Львів\",\"region\":null,\"value\":2218000},{\"title\":\"Львівські Отруби\",\"region\":\" \",\"value\":2208311},{\"title\":\"Львівська\",\"region\":null,\"value\":2000615},{\"title\":\"Дубляни-Львівські\",\"region\":null,\"value\":2219059},{\"title\":\"Черкаси Львівські\",\"region\":null,\"value\":2218024}]",
+    "headers" : {
+      "Date" : "Tue, 01 Aug 2017 23:49:28 GMT",
+      "Server" : "Apache",
+      "Set-Cookie" : [ "_gv_lang=uk; expires=Mon, 30-Oct-2017 23:49:28 GMT; Max-Age=7776000; path=/", "_gv_sessid=llhk9oca7vbput2og9demrsmg3; path=/", "HTTPSERVERID=server1; path=/" ],
+      "Expires" : "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control" : "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, private",
+      "Pragma" : "no-cache",
+      "Vary" : "User-Agent",
+      "X-UA-Compatible" : "IE=Edge,chrome=1",
+      "Content-Type" : "application/json",
+      "Content-Language" : "ru"
+    }
+  },
+  "uuid" : "c365afca-9efa-48be-a507-5c07948642e9",
+  "persistent" : true
+}
