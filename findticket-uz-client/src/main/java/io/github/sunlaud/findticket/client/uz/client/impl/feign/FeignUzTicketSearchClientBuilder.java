@@ -6,7 +6,6 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import feign.*;
-import feign.Response;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
@@ -14,13 +13,13 @@ import feign.jackson.JacksonDecoder;
 import feign.jaxrs.JAXRSContract;
 import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
-import io.github.sunlaud.findticket.client.uz.client.Apis;
-import io.github.sunlaud.findticket.client.uz.response.deserialize.SearchResponseInstantiationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.client.UzTicketSearchClient;
+import io.github.sunlaud.findticket.client.uz.response.deserialize.SearchResponseInstantiationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.util.Utils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.Interceptor;
+import okhttp3.Protocol;
 import okhttp3.internal.http.RealResponseBody;
 import okio.Buffer;
 import org.apache.commons.io.IOUtils;
@@ -38,7 +37,7 @@ public class FeignUzTicketSearchClientBuilder {
 
     private static final boolean USE_CACHE = false;
 
-    public static UzTicketSearchClient getTicketSearchService() {
+    public static UzTicketSearchClient getTicketSearchService(String baseUrl) {
 //        Client client = new Client.Default(null, null);
         final File cacheRootDir = new File("/tmp/uz-findtiket/cache");
         okhttp3.OkHttpClient.Builder clientBuilder = new okhttp3.OkHttpClient.Builder();
@@ -109,7 +108,7 @@ public class FeignUzTicketSearchClientBuilder {
         okhttp3.OkHttpClient okHttpClient = clientBuilder.build();
 
         Client client = new OkHttpClient(okHttpClient);
-        return getTicketSearchService(client);
+        return getTicketSearchService(client, baseUrl);
     }
 
     private static String getRequestHash(okhttp3.Request request) throws IOException {
@@ -127,8 +126,8 @@ public class FeignUzTicketSearchClientBuilder {
     }
 
     @SneakyThrows
-    public static UzTicketSearchClient getTicketSearchService(Client client) {
-        HeadersInterceptor requestInterceptor = new HeadersInterceptor();
+    public static UzTicketSearchClient getTicketSearchService(Client client, String baseUrl) {
+        HeadersInterceptor requestInterceptor = new HeadersInterceptor(baseUrl);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setConfig(mapper.getDeserializationConfig()
                 .withHandler(new SearchResponseInstantiationProblemHandler()));
@@ -142,19 +141,24 @@ public class FeignUzTicketSearchClientBuilder {
                 .requestInterceptor(requestInterceptor)
                 .errorDecoder(new IllegalArgumentExceptionOn503Decoder())
                 .client(client)
-                .target(UzTicketSearchClient.class, Apis.BASE_URL);
+                .target(UzTicketSearchClient.class, baseUrl);
     }
 
 
     private static class HeadersInterceptor implements RequestInterceptor {
+        private final String baseUrl;
+
+        private HeadersInterceptor(String baseUrl) {
+            this.baseUrl = baseUrl;
+        }
 
         @Override
         public void apply(RequestTemplate template) {
             template.header("GV-Ajax", "1");
             template.header("GV-Screen", "1366x768");
             template.header("Content-Type", "application/x-www-form-urlencoded");
-            template.header("GV-Referer", Apis.BASE_URL);
-            template.header("Referer", Apis.BASE_URL);
+            template.header("GV-Referer", baseUrl);
+            template.header("Referer", baseUrl);
             template.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             template.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
         }

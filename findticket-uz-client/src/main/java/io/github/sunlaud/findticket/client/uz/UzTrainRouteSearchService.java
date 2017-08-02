@@ -3,6 +3,7 @@ package io.github.sunlaud.findticket.client.uz;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import io.github.sunlaud.findticket.RouteSearchService;
+import io.github.sunlaud.findticket.client.uz.client.Apis;
 import io.github.sunlaud.findticket.client.uz.client.UzTicketSearchClient;
 import io.github.sunlaud.findticket.client.uz.client.impl.feign.FeignUzTicketSearchClientBuilder;
 import io.github.sunlaud.findticket.client.uz.dto.StationDto;
@@ -24,7 +25,11 @@ public class UzTrainRouteSearchService implements RouteSearchService {
     private final UzTicketSearchClient api;
 
     public UzTrainRouteSearchService() {
-        api = FeignUzTicketSearchClientBuilder.getTicketSearchService();
+        this(Apis.BASE_URL);
+    }
+
+    public UzTrainRouteSearchService(String baseUrl) {
+        api = FeignUzTicketSearchClientBuilder.getTicketSearchService(baseUrl);
     }
 
     @Override
