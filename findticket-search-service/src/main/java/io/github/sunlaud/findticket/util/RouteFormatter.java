@@ -20,7 +20,7 @@ public class RouteFormatter {
             sb.append(StringUtils.rightPad(freeSeats, 16) + " (");
             sb.append(HUMAN_READABLE_DATE.print(route.getDepartureDate()) + " -> ");
             sb.append(HUMAN_READABLE_DATE.print(route.getArrivalDate()) + ", ");
-            Period travelTime = route.getTravelTime().toPeriod();
+            Period travelTime = route.getTravelTime();
             sb.append(String.format("%sh%sm, ", travelTime.getHours(), travelTime.minusHours(travelTime.getHours()).getMinutes()));
             sb.append(route.getName() + ")");
 
@@ -32,7 +32,7 @@ public class RouteFormatter {
         @Override
         public String apply(TransportRoute route) {
             String placesPrefix = "\n - ";
-            Period travelTime = route.getTravelTime().toPeriod();
+            Period travelTime = route.getTravelTime();
             String header = String.format("%s (%s), %s:%s, %s -> %s" + placesPrefix,
                     route.getId(),
                     route.getName(),

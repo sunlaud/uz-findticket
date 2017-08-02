@@ -12,7 +12,8 @@ public class TripPlanner {
     public static final Comparator<TransportRoute> TRAVEL_TIME_ROUTE_COMPARATOR = new Comparator<TransportRoute>() {
         @Override
         public int compare(TransportRoute o1, TransportRoute o2) {
-            int byTravelTime = o1.getTravelTime().compareTo(o2.getTravelTime());
+            int byTravelTime = o1.getTravelTime().toStandardDuration()
+                    .compareTo(o2.getTravelTime().toStandardDuration());
             if (byTravelTime == 0) {
                 return Integer.compare(o1.hashCode(), o2.hashCode());
             }

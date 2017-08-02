@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.joda.ser.LocalTimeSerializer;
+import com.fasterxml.jackson.datatype.joda.ser.PeriodSerializer;
+import io.github.sunlaud.findticket.client.uz.response.deserialize.CustomFormatPeriodDeserializer;
 import lombok.Data;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import java.util.List;
 
@@ -22,11 +20,11 @@ public class TrainDto {
     @JsonProperty("num")
     private String id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
     @JsonProperty("travel_time")
-    @JsonDeserialize(using = LocalTimeDeserializer.class)
-    @JsonSerialize(using = LocalTimeSerializer.class)
-    private LocalTime travelTime;
+    @JsonDeserialize(using = CustomFormatPeriodDeserializer.class)
+    @JsonSerialize(using = PeriodSerializer.class)
+    private Period travelTime;
 
     /** this is actually the train start station (may be not the station in search request) */
     @JsonProperty("from")
@@ -38,10 +36,6 @@ public class TrainDto {
 
     @JsonProperty("types")
     private List<FreeSeatsDto> freeSeats;
-
-    public Duration getTravelTime() {
-        return Duration.standardSeconds(travelTime.get(DateTimeFieldType.secondOfDay()));
-    }
 
     public String getName() {
         return from.getStationName() + " - " + till.getStationName();

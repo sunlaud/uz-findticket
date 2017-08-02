@@ -1,8 +1,8 @@
 package io.github.sunlaud.findticket.model;
 
 import lombok.Data;
-import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
 
 import java.util.Map;
 
@@ -20,6 +20,6 @@ public class TransportRoute {
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
 
-    private Duration travelTime;
+    private Period travelTime;
     private Map<SeatType, Integer> freeSeatsCountByType;
 }
