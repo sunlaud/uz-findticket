@@ -11,10 +11,5 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FindTrainResponse extends SearchResponse<List<TrainDto>> {
     @JsonProperty("value")
-    private List<TrainDto> trains;
-
-    @Override
-    public List<TrainDto> getValue() {
-            return trains;
-    }
+    private List<TrainDto> value;
 }
