@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 
 @Data
 @Builder(toBuilder = true)
 public class GetCoachesRequest {
-    private static final ZoneId TIMEZONE = ZoneId.of("Europe/Kiev");
+    private static final DateTimeZone TIMEZONE = DateTimeZone.forID("Europe/Kiev");
 
     @JsonProperty("station_id_from")
     private final int stationIdFrom;
@@ -34,7 +33,7 @@ public class GetCoachesRequest {
     @JsonProperty("date_dep") //format 1473351000 (for 08.09.2016)
     private long getDepartureDateAsEpochSecond() {
         return departureDate != null
-                ? departureDate.atZone(TIMEZONE).toInstant().getEpochSecond()
+                ? departureDate.toDateTime(TIMEZONE).toInstant().getMillis()
                 : departureDateAsEpochSecond;
     }
 
