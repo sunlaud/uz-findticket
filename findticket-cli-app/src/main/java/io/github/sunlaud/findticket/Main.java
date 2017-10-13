@@ -31,12 +31,12 @@ public class Main {
     }
 
     private void run() {
-            List<Station> fromAll = routeSearchService.findStations("Дніпропетровськ-Голов.");
+            List<Station> fromAll = routeSearchService.findStations("Дніпро-Головний");
             System.out.println(fromAll);
             List<Station> tillAll = routeSearchService.findStations("Львів");
             System.out.println(tillAll);
             LocalDateTime departure = LocalDate.now().plusDays(10).toDateTimeAtStartOfDay().toLocalDateTime();
-            departure = LocalDateTime.parse("2017-06-22T00:00");
+//            departure = LocalDateTime.parse("2017-10-22T00:00");
         try {
             Station from = fromAll.get(0);
             Station till = tillAll.get(0);
