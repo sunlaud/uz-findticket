@@ -13,11 +13,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FindStationResponse extends SearchResponse<List<StationDto>> {
     @JsonProperty("value")
-    private List<StationDto> stations;
-
-    @Override
-    public List<StationDto> getValue() {
-            return stations;
-    }
+    private List<StationDto> value;
 }
 
