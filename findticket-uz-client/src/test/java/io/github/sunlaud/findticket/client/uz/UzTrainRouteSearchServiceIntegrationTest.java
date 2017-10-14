@@ -8,17 +8,20 @@ import com.google.common.collect.Iterables;
 import io.github.sunlaud.findticket.model.SeatType;
 import io.github.sunlaud.findticket.model.Station;
 import io.github.sunlaud.findticket.model.TransportRoute;
+import org.assertj.core.api.Condition;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 import static io.github.sunlaud.findticket.filtering.Filters.routeIdEqualTo;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UzTrainRouteSearchServiceIntegrationTest {
     //also can be used:
@@ -70,6 +73,57 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         expectedRoute.setFreeSeatsCountByType(expectedFreeSeats);
 
         assertThat(actualRoute).isEqualTo(expectedRoute);
+    }
+
+    @Ignore("Uses real service - can lead to inconsistent test results and build slowdown due to network delays")
+    @Test
+    public void findStationsViaRealServer() throws Exception {
+        //GIVEN
+        UzTrainRouteSearchService sut = new UzTrainRouteSearchService();
+        final LocalDateTime departure = LocalDate.now().plusDays(29).toDateTimeAtStartOfDay().toLocalDateTime();
+
+        //WHEN
+        final Station from = sut.findStations("Львів").get(0);
+        final Station to = sut.findStations("Запоріжжя 1").get(0);
+        Collection<TransportRoute> actualRoutes = sut.findRoutes(from, to, departure);
+
+        //THEN
+        assertThat(actualRoutes).isNotEmpty();
+        assertThat(actualRoutes).are(withSrcAndDestStations(from, to));
+        assertThat(actualRoutes).are(withDepartureDateAfter(departure));
+        assertThat(actualRoutes).are(withAllFieldsNotNull());
+    }
+
+    private Condition<TransportRoute> withAllFieldsNotNull() {
+        return new Condition<TransportRoute>() {
+            @Override
+            public boolean matches(TransportRoute route) {
+                return route.getArrivalDate() != null
+                        && route.getId() != null
+                        && route.getName() != null
+                        && route.getTravelTime() != null
+                        && route.getFreeSeatsCountByType() != null;
+            }
+        };
+
+    }
+
+    private Condition<TransportRoute> withSrcAndDestStations(final Station src, final Station dest) {
+        return new Condition<TransportRoute>() {
+            @Override
+            public boolean matches(TransportRoute route) {
+                return route.getFrom().equals(src) && route.getTill().equals(dest);
+            }
+        };
+    }
+
+    private Condition<TransportRoute> withDepartureDateAfter(final LocalDateTime departureDate) {
+        return new Condition<TransportRoute>() {
+            @Override
+            public boolean matches(TransportRoute route) {
+                return route.getDepartureDate().isAfter(departureDate);
+            }
+        };
     }
 
 
