@@ -17,9 +17,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(Parameterized.class)
 public class SearchResponseInstantiationProblemHandlerTest {
@@ -51,7 +49,7 @@ public class SearchResponseInstantiationProblemHandlerTest {
         final SearchResponse response = mapper.readValue(is, SearchResponse.class);
 
         //THEN
-        assertThat(response, instanceOf(expectedClass));
+        assertThat(response).isInstanceOf(expectedClass);
 
         boolean allFieldsAreNotNull = Iterables.all(Arrays.asList(response.getClass().getDeclaredFields()),
                 new Predicate<Field>() {
@@ -62,6 +60,6 @@ public class SearchResponseInstantiationProblemHandlerTest {
                         return field.get(response) != null;
                     }
                 });
-        assertTrue("Deserialized object should have not null fields", allFieldsAreNotNull);
+        assertThat(allFieldsAreNotNull).isTrue().withFailMessage("Deserialized object should not have null fields");
     }
 }

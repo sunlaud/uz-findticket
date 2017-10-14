@@ -18,8 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import static io.github.sunlaud.findticket.filtering.Filters.routeIdEqualTo;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class UzTrainRouteSearchServiceIntegrationTest {
     //also can be used:
@@ -70,7 +69,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         expectedFreeSeats.put(new SeatType("П"), 42);
         expectedRoute.setFreeSeatsCountByType(expectedFreeSeats);
 
-        assertThat(actualRoute, equalTo(expectedRoute));
+        assertThat(actualRoute).isEqualTo(expectedRoute);
     }
 
 
