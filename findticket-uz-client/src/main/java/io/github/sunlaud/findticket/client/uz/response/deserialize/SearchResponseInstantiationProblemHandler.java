@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import io.github.sunlaud.findticket.client.uz.response.ErrorSearchResponse;
-import io.github.sunlaud.findticket.client.uz.response.FindStationResponse;
 import io.github.sunlaud.findticket.client.uz.response.FindTrainResponse;
 import io.github.sunlaud.findticket.client.uz.response.SearchResponse;
 
@@ -20,12 +19,9 @@ public class SearchResponseInstantiationProblemHandler extends DeserializationPr
         }
         TreeNode treeNode = p.readValueAsTree();
         JsonParser parser = treeNode.traverse(p.getCodec());
-        if (treeNode.get("error").asToken() == JsonToken.VALUE_TRUE) {
-            return parser.readValueAs(ErrorSearchResponse.class);
-        } else {
-            return treeNode.at("/value/0/num").isValueNode()
-                    ? parser.readValueAs(FindTrainResponse.class)
-                    : parser.readValueAs(FindStationResponse.class);
-        }
+        Class<?> responseClass = (treeNode.get("error").asToken() == JsonToken.VALUE_TRUE)
+                ? ErrorSearchResponse.class
+                : FindTrainResponse.class;
+        return parser.readValueAs(responseClass);
     }
 }
