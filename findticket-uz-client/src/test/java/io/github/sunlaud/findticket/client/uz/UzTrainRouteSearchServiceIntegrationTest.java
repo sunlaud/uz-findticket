@@ -5,17 +5,14 @@ import com.github.tomakehurst.wiremock.core.Options;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.recording.RecordingStatus;
 import com.google.common.collect.Iterables;
+import io.github.sunlaud.findticket.model.JUnitSoftAssertions;
 import io.github.sunlaud.findticket.model.SeatType;
 import io.github.sunlaud.findticket.model.Station;
 import io.github.sunlaud.findticket.model.TransportRoute;
-import org.assertj.core.api.Condition;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +26,8 @@ public class UzTrainRouteSearchServiceIntegrationTest {
     // - http://www.mock-server.com
     // - https://github.com/jadler-mocking/jadler/wiki
     private WireMockServer mockServer;
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Before
     public void setup() {
@@ -89,43 +88,12 @@ public class UzTrainRouteSearchServiceIntegrationTest {
 
         //THEN
         assertThat(actualRoutes).isNotEmpty();
-        assertThat(actualRoutes).are(withSrcAndDestStations(from, to));
-        assertThat(actualRoutes).are(withDepartureDateAfter(departure));
-        assertThat(actualRoutes).are(withAllFieldsNotNull());
+        for (TransportRoute actualRoute : actualRoutes) {
+            softly.assertThat(actualRoute).hasFrom(from).hasTill(to);
+            softly.assertThat(actualRoute.getDepartureDate()).isGreaterThanOrEqualTo(departure);
+            softly.assertThat(actualRoute).hasNoNullFieldsOrProperties();
+        }
     }
-
-    private Condition<TransportRoute> withAllFieldsNotNull() {
-        return new Condition<TransportRoute>() {
-            @Override
-            public boolean matches(TransportRoute route) {
-                return route.getArrivalDate() != null
-                        && route.getId() != null
-                        && route.getName() != null
-                        && route.getTravelTime() != null
-                        && route.getFreeSeatsCountByType() != null;
-            }
-        };
-
-    }
-
-    private Condition<TransportRoute> withSrcAndDestStations(final Station src, final Station dest) {
-        return new Condition<TransportRoute>() {
-            @Override
-            public boolean matches(TransportRoute route) {
-                return route.getFrom().equals(src) && route.getTill().equals(dest);
-            }
-        };
-    }
-
-    private Condition<TransportRoute> withDepartureDateAfter(final LocalDateTime departureDate) {
-        return new Condition<TransportRoute>() {
-            @Override
-            public boolean matches(TransportRoute route) {
-                return route.getDepartureDate().isAfter(departureDate);
-            }
-        };
-    }
-
 
     private String getMockBaseUrl() {
         return String.format("http://%s:%s", mockServer.getOptions().bindAddress(), mockServer.port());
