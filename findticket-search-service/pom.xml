@@ -16,18 +16,9 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>fr.xebia.extras</groupId>-->
-            <!--<artifactId>selma-processor</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.xebia.extras</groupId>
-            <artifactId>selma</artifactId>
         </dependency>
     </dependencies>
 
