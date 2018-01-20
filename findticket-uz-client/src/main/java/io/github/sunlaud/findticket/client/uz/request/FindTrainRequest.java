@@ -20,20 +20,20 @@ import org.joda.time.format.DateTimeFormatter;
 @Data
 @Builder(toBuilder = true)
 public class FindTrainRequest {
-    private static final String DATE_FORMAT = "dd.MM.yyyy";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern(DATE_FORMAT);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern(TIME_FORMAT);
 
 
-    @JsonProperty("station_id_from")
+    @JsonProperty("from")
     private final int stationIdFrom;
 
-    @JsonProperty("station_id_till")
+    @JsonProperty("to")
     private final int stationIdTill;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
-    @JsonProperty("time_dep")
+    @JsonProperty("time")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
     private final LocalTime departureTime; //format 22:00
@@ -41,8 +41,8 @@ public class FindTrainRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonProperty("date_dep")
-    private final LocalDate departureDate; //format 24.06.2016
+    @JsonProperty("date")
+    private final LocalDate departureDate; //format 2018-01-20
 
     public FindTrainRequest comingBackOn(LocalDateTime dateBack) {
         return toBuilder()

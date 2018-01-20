@@ -26,6 +26,10 @@ public class TripPlanner {
         this.routeSearchService = routeSearchService;
     }
 
+    /**
+     *
+     * @throws RouteSearchException if something went wrong
+     */
     public List<TransportRoute> findRoutes(Station stationFrom, Station stationTo, LocalDateTime departureDate, DaysOffset offset) {
         Set<TransportRoute> routes = new HashSet<>();
         for (int i = offset.getStartDay(); i <= offset.getEndDay(); i++) {
@@ -34,8 +38,10 @@ public class TripPlanner {
             try {
                 Collection<TransportRoute> found = routeSearchService.findRoutes(stationFrom, stationTo, ofsettedDepartureDate);
                 routes.addAll(found);
+            } catch (RouteSearchException e) {
+                throw e;
             } catch (Exception e) {
-                log.warn("Error searching trains", e);
+                throw new RouteSearchException("Error searching trains", e);
             }
         }
         return new ArrayList<>(routes);

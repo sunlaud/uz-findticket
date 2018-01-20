@@ -6,9 +6,6 @@ import lombok.Getter;
 @Getter
 //@JsonDeserialize(using = SearchResponseDeserializer.class)
 public abstract class SearchResponse<T> {
-    @JsonProperty("data")
-    public Object data;
-
     @JsonProperty("captcha")
     public Object captcha;
 

@@ -21,7 +21,7 @@ public class TrainDto {
     private String id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
-    @JsonProperty("travel_time")
+    @JsonProperty("travelTime")
     @JsonDeserialize(using = CustomFormatPeriodDeserializer.class)
     @JsonSerialize(using = PeriodSerializer.class)
     private Period travelTime;
@@ -31,7 +31,7 @@ public class TrainDto {
     private TimeAndPlaceDto from;
 
     /** this is actually the train end station (may be not the station in search request) */
-    @JsonProperty("till")
+    @JsonProperty("to")
     private TimeAndPlaceDto till;
 
     @JsonProperty("types")

@@ -10,6 +10,16 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FindTrainResponse extends SearchResponse<List<TrainDto>> {
-    @JsonProperty("value")
-    private List<TrainDto> value;
+    @JsonProperty("data")
+    private UglyValueWrapper valueWrapper;
+
+    @Override
+    public List<TrainDto> getValue() {
+        return valueWrapper.value;
+    }
+
+    private static class UglyValueWrapper {
+        @JsonProperty("list")
+        private List<TrainDto> value;
+    }
 }

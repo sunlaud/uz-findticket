@@ -1,102 +1,83 @@
 {
-  "value": [
-    {
-      "num": "618\u041f",
-      "model": 0,
-      "category": 0,
-      "travel_time": "18:56",
-      "from": {
-        "station_id": 2210700,
-        "station": "\u0414\u043d\u0456\u043f\u0440\u043e\u043f\u0435\u0442\u0440\u043e\u0432\u0441\u044c\u043a \u0413\u043e\u043b\u043e\u0432\u043d\u0438\u0439",
-        "date": 1473771000,
-        "src_date": "2016-09-13 15:50:00"
-      },
-      "till": {
-        "station_id": 2208001,
-        "station": "\u0417\u0430\u043f\u043e\u0440\u0456\u0436\u0436\u044f 1",
-        "date": 1473839160,
-        "src_date": "2016-09-14 10:46:00"
-      },
-      "types": [
-        {
-          "title": "\u041a\u0443\u043f\u0435",
-          "letter": "\u041a",
-          "places": 34
+  "data": {
+    "list": [
+      {
+        "num": "070Л",
+        "category": 0,
+        "travelTime": "14:03",
+        "from": {
+          "code": "2200300",
+          "station": "Хмельницький",
+          "stationTrain": "Львів",
+          "date": "субота, 20.01.2018",
+          "time": "05:31",
+          "sortTime": 1516419060,
+          "srcDate": "2018-01-20"
         },
-        {
-          "title": "\u041f\u043b\u0430\u0446\u043a\u0430\u0440\u0442",
-          "letter": "\u041f",
-          "places": 45
-        }
-      ]
-    },
-    {
-      "num": "063\u041f",
-      "model": 0,
-      "category": 0,
-      "travel_time": "11:17",
-      "from": {
-        "station_id": 2210700,
-        "station": "\u0414\u043d\u0456\u043f\u0440\u043e\u043f\u0435\u0442\u0440\u043e\u0432\u0441\u044c\u043a \u0413\u043e\u043b\u043e\u0432\u043d\u0438\u0439",
-        "date": 1473783000,
-        "src_date": "2016-09-13 19:10:00"
-      },
-      "till": {
-        "station_id": 2208001,
-        "station": "\u041e\u0434\u0435\u0441\u0430-\u0413\u043e\u043b\u043e\u0432\u043d\u0430",
-        "date": 1473823620,
-        "src_date": "2016-09-14 06:27:00"
-      },
-      "types": [
-        {
-          "title": "\u041b\u044e\u043a\u0441",
-          "letter": "\u041b",
-          "places": 3
+        "to": {
+          "code": "2210700",
+          "station": "Дніпро-Головний",
+          "stationTrain": "Маріуполь",
+          "date": "субота, 20.01.2018",
+          "time": "19:34",
+          "sortTime": 1516469640
         },
-        {
-          "title": "\u041a\u0443\u043f\u0435",
-          "letter": "\u041a",
-          "places": 24
+        "types": [
+          {
+            "id": "К",
+            "title": "Купе",
+            "letter": "К",
+            "places": 16
+          },
+          {
+            "id": "П",
+            "title": "Плацкарт",
+            "letter": "П",
+            "places": 43
+          }
+        ],
+        "child": {
+          "minDate": "2004-01-21",
+          "maxDate": "2018-01-20"
         },
-        {
-          "title": "\u041f\u043b\u0430\u0446\u043a\u0430\u0440\u0442",
-          "letter": "\u041f",
-          "places": 58
-        }
-      ]
-    },
-    {
-      "num": "092\u0414",
-      "model": 0,
-      "category": 0,
-      "travel_time": "11:12",
-      "from": {
-        "station_id": 2210700,
-        "station": "\u041a\u043e\u0441\u0442\u044f\u043d\u0442\u0438\u043d\u0456\u0432\u043a\u0430",
-        "date": 1473789420,
-        "src_date": "2016-09-13 20:57:00"
+        "allowStud": 1,
+        "allowBooking": 1,
+        "allowRoundtrip": 1,
+        "isEurope": 0,
+        "noReserve": 1
       },
-      "till": {
-        "station_id": 2208001,
-        "station": "\u041e\u0434\u0435\u0441\u0430-\u0413\u043e\u043b\u043e\u0432\u043d\u0430",
-        "date": 1473829740,
-        "src_date": "2016-09-14 08:09:00"
-      },
-      "types": [
-        {
-          "title": "\u041a\u0443\u043f\u0435",
-          "letter": "\u041a",
-          "places": 14
+      {
+        "num": "042Л",
+        "category": 0,
+        "travelTime": "13:29",
+        "from": {
+          "code": "2200300",
+          "station": "Хмельницький",
+          "stationTrain": "Трускавець",
+          "date": "субота, 20.01.2018",
+          "time": "19:48",
+          "sortTime": 1516470480,
+          "srcDate": "2018-01-20"
         },
-        {
-          "title": "\u041f\u043b\u0430\u0446\u043a\u0430\u0440\u0442",
-          "letter": "\u041f",
-          "places": 21
-        }
-      ]
-    }
-  ],
-  "error": null,
-  "data": null,
-  "captcha": null
+        "to": {
+          "code": "2210700",
+          "station": "Дніпро-Головний",
+          "stationTrain": "Дніпро-Головний",
+          "date": "неділя, 21.01.2018",
+          "time": "09:17",
+          "sortTime": 1516519020
+        },
+        "types": [],
+        "child": {
+          "minDate": "2004-01-21",
+          "maxDate": "2018-01-20"
+        },
+        "allowStud": 1,
+        "allowBooking": 1,
+        "allowRoundtrip": 1,
+        "isEurope": 0,
+        "noReserve": 1
+      }
+    ]
+  }
 }

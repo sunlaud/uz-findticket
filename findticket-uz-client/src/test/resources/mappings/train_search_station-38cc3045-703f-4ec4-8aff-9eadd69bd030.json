@@ -1,17 +1,17 @@
 {
-  "id" : "8bcdbae3-0957-44b3-93d6-1f897e0bb38a",
-  "name" : "purchase_station",
+  "id" : "38cc3045-703f-4ec4-8aff-9eadd69bd030",
+  "name" : "train_search_station",
   "request" : {
-    "url" : "/purchase/station/?term=%D0%97%D0%B0%D0%BF%D0%BE%D1%80%D1%96%D0%B6%D0%B6%D1%8F+1",
+    "url" : "/train_search/station/?term=%D0%97%D0%B0%D0%BF%D0%BE%D1%80%D1%96%D0%B6%D0%B6%D1%8F+1",
     "method" : "POST"
   },
   "response" : {
     "status" : 200,
     "body" : "[{\"title\":\"Запоріжжя 1\",\"region\":null,\"value\":2210800},{\"title\":\"Запоріжжя 2\",\"region\":null,\"value\":2210730},{\"title\":\"Запоріжжя Ліве\",\"region\":null,\"value\":2210801},{\"title\":\"Запоріжжя-Вант.\",\"region\":null,\"value\":2210150},{\"title\":\"Запоріжжя-Кам’янське\",\"region\":null,\"value\":2210768}]",
     "headers" : {
-      "Date" : "Tue, 01 Aug 2017 23:49:21 GMT",
+      "Date" : "Fri, 19 Jan 2018 22:42:20 GMT",
       "Server" : "Apache",
-      "Set-Cookie" : [ "_gv_lang=uk; expires=Mon, 30-Oct-2017 23:49:21 GMT; Max-Age=7776000; path=/", "_gv_sessid=iij0enhidba29ptt51iu46vas6; path=/", "HTTPSERVERID=server1; path=/" ],
+      "Set-Cookie" : [ "_gv_lang=uk; expires=Thu, 19-Apr-2018 22:42:20 GMT; Max-Age=7776000; path=/", "_gv_sessid=900uacsu6pstln917prvliake4; path=/", "HTTPSERVERID=server3; path=/" ],
       "Expires" : "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control" : "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, private",
       "Pragma" : "no-cache",
@@ -21,6 +21,6 @@
       "Content-Language" : "ru"
     }
   },
-  "uuid" : "8bcdbae3-0957-44b3-93d6-1f897e0bb38a",
+  "uuid" : "38cc3045-703f-4ec4-8aff-9eadd69bd030",
   "persistent" : true
 }

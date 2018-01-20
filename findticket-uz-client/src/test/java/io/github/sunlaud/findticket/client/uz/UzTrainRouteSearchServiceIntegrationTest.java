@@ -12,7 +12,11 @@ import io.github.sunlaud.findticket.model.TransportRoute;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,7 +38,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         Options options = WireMockConfiguration.options().bindAddress("127.0.0.1");
         mockServer = new WireMockServer(options);
         mockServer.start();
-//      mockServer.startRecording(Apis.BASE_UR);
+//        mockServer.startRecording(Apis.BASE_URL);
     }
 
     @After
@@ -53,7 +57,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         //WHEN
         Station from = sut.findStations("Львів").get(0);
         Station to = sut.findStations("Запоріжжя 1").get(0);
-        Collection<TransportRoute> actualRoutes = sut.findRoutes(from, to, LocalDateTime.parse("2017-09-09T00:00"));
+        Collection<TransportRoute> actualRoutes = sut.findRoutes(from, to, LocalDateTime.parse("2018-01-23T00:00"));
         TransportRoute actualRoute = Iterables.getOnlyElement(Iterables.filter(actualRoutes, routeIdEqualTo("120Л")));
 
         //THEN
@@ -62,13 +66,12 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         expectedRoute.setName("Львів - Запоріжжя 1");
         expectedRoute.setFrom(new Station("Львів", "2218000"));
         expectedRoute.setTill(new Station("Запоріжжя 1", "2210800"));
-        expectedRoute.setDepartureDate(LocalDateTime.parse("2017-09-09T14:45:00.000"));
-        expectedRoute.setArrivalDate(LocalDateTime.parse("2017-09-10T15:06:00.000"));
-        expectedRoute.setTravelTime(new Period("PT24H21M"));
+        expectedRoute.setDepartureDate(LocalDateTime.parse("2018-01-23T14:05:00.000"));
+        expectedRoute.setArrivalDate(LocalDateTime.parse("2018-01-24T14:52:00.000"));
+        expectedRoute.setTravelTime(new Period("PT24H47M"));
         HashMap<SeatType, Integer> expectedFreeSeats = new HashMap<>();
-        expectedFreeSeats.put(new SeatType("К"), 9);
-        expectedFreeSeats.put(new SeatType("Л"), 16);
-        expectedFreeSeats.put(new SeatType("П"), 42);
+        expectedFreeSeats.put(new SeatType("К"), 11);
+        expectedFreeSeats.put(new SeatType("П"), 139);
         expectedRoute.setFreeSeatsCountByType(expectedFreeSeats);
 
         assertThat(actualRoute).isEqualTo(expectedRoute);

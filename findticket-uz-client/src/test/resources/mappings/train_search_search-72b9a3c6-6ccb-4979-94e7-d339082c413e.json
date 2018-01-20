@@ -1,0 +1,31 @@
+{
+  "id" : "72b9a3c6-6ccb-4979-94e7-d339082c413e",
+  "name" : "train_search_search",
+  "request" : {
+    "url" : "/train_search/search/",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalTo" : "from=2218000&to=2210800&time=00%3A00&date=2018-01-23",
+      "caseInsensitive" : false
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"data\":{\"list\":[{\"num\":\"070Л\",\"category\":0,\"travelTime\":\"20:20\",\"from\":{\"code\":\"2218000\",\"station\":\"Львів\",\"stationTrain\":\"Львів\",\"date\":\"вівторок, 23.01.2018\",\"time\":\"01:20\",\"sortTime\":1516663200,\"srcDate\":\"2018-01-23\"},\"to\":{\"code\":\"2210800\",\"station\":\"Запоріжжя 1\",\"stationTrain\":\"Маріуполь\",\"date\":\"вівторок, 23.01.2018\",\"time\":\"21:40\",\"sortTime\":1516736400},\"types\":[],\"child\":{\"minDate\":\"2004-01-24\",\"maxDate\":\"2018-01-20\"},\"allowStud\":1,\"allowBooking\":1,\"allowRoundtrip\":1,\"isEurope\":0},{\"num\":\"086Ш\",\"category\":0,\"travelTime\":\"20:07\",\"from\":{\"code\":\"2218000\",\"station\":\"Львів\",\"stationTrain\":\"Львів\",\"date\":\"вівторок, 23.01.2018\",\"time\":\"11:07\",\"sortTime\":1516698420,\"srcDate\":\"2018-01-23\"},\"to\":{\"code\":\"2210800\",\"station\":\"Запоріжжя 1\",\"stationTrain\":\"Новоолексіївка\",\"date\":\"середа, 24.01.2018\",\"time\":\"07:14\",\"sortTime\":1516770840},\"types\":[],\"child\":{\"minDate\":\"2004-01-24\",\"maxDate\":\"2018-01-20\"},\"allowStud\":1,\"allowBooking\":1,\"allowRoundtrip\":1,\"isEurope\":0},{\"num\":\"120Л\",\"category\":0,\"travelTime\":\"24:47\",\"from\":{\"code\":\"2218000\",\"station\":\"Львів\",\"stationTrain\":\"Львів\",\"date\":\"вівторок, 23.01.2018\",\"time\":\"14:05\",\"sortTime\":1516709100,\"srcDate\":\"2018-01-23\"},\"to\":{\"code\":\"2210800\",\"station\":\"Запоріжжя 1\",\"stationTrain\":\"Запоріжжя 1\",\"date\":\"середа, 24.01.2018\",\"time\":\"14:52\",\"sortTime\":1516798320},\"types\":[{\"id\":\"К\",\"title\":\"Купе\",\"letter\":\"К\",\"places\":11},{\"id\":\"П\",\"title\":\"Плацкарт\",\"letter\":\"П\",\"places\":139}],\"child\":{\"minDate\":\"2004-01-24\",\"maxDate\":\"2018-01-20\"},\"allowStud\":1,\"allowBooking\":1,\"allowRoundtrip\":1,\"isEurope\":0}]}}",
+    "headers" : {
+      "Date" : "Fri, 19 Jan 2018 22:42:20 GMT",
+      "Server" : "Apache",
+      "Set-Cookie" : [ "_gv_lang=uk; expires=Thu, 19-Apr-2018 22:42:20 GMT; Max-Age=7776000; path=/", "_gv_sessid=ruj7ch062ed9ikm7r16769toj3; path=/", "HTTPSERVERID=server2; path=/" ],
+      "Expires" : "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control" : "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, private",
+      "Pragma" : "no-cache",
+      "Uz-Txn" : "f2a43e0c73914ef585f964095100b311",
+      "Vary" : "User-Agent",
+      "X-UA-Compatible" : "IE=Edge,chrome=1",
+      "Content-Type" : "application/json",
+      "Content-Language" : "ru"
+    }
+  },
+  "uuid" : "72b9a3c6-6ccb-4979-94e7-d339082c413e",
+  "persistent" : true
+}

@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class ErrorSearchResponse<T> extends SearchResponse<T> {
-    @JsonProperty("value")
+    @JsonProperty("data")
     private String message;
 
     @JsonIgnore
