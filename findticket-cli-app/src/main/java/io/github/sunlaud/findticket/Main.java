@@ -61,7 +61,7 @@ public class Main {
             System.out.println(stringifyRoutes(routes, MULTI_LINE));
         } catch (Exception ex) {
             log.error("Error searching trains:", ex);
-            System.err.println("Error searching trains - " + ex.getMessage());
+            ex.printStackTrace(System.err);
         }
     }
 }
