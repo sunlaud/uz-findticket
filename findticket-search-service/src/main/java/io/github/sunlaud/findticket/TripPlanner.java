@@ -32,11 +32,9 @@ public class TripPlanner {
      */
     public List<TransportRoute> findRoutes(Station stationFrom, Station stationTo, LocalDateTime departureDate, DaysOffset offset) {
         Set<TransportRoute> routes = new HashSet<>();
-        for (int i = offset.getStartDay(); i <= offset.getEndDay(); i++) {
-            LocalDateTime ofsettedDepartureDate = departureDate.plusDays(i);
-
+        for (LocalDateTime date : offset.applyTo(departureDate)) {
             try {
-                Collection<TransportRoute> found = routeSearchService.findRoutes(stationFrom, stationTo, ofsettedDepartureDate);
+                Collection<TransportRoute> found = routeSearchService.findRoutes(stationFrom, stationTo, date);
                 routes.addAll(found);
             } catch (RouteSearchException e) {
                 throw e;
