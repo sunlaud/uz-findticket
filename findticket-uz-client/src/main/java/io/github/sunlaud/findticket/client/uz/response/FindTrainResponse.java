@@ -18,7 +18,11 @@ public class FindTrainResponse extends SearchResponse<List<TrainDto>> {
         return valueWrapper.value;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private static class UglyValueWrapper {
+        @JsonProperty("warning")
+        private String warning; //one known reason for this - no free seats in the train
+
         @JsonProperty("list")
         private List<TrainDto> value;
     }

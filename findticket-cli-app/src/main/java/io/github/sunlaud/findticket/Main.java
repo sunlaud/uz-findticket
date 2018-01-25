@@ -35,7 +35,7 @@ public class Main {
             System.out.println(fromAll);
             List<Station> tillAll = routeSearchService.findStations("Львів");
             System.out.println(tillAll);
-            LocalDateTime departure = LocalDate.now().plusDays(10).minusMonths(6).toDateTimeAtStartOfDay().toLocalDateTime();
+            LocalDateTime departure = LocalDate.now().plusDays(10).toDateTimeAtStartOfDay().toLocalDateTime();
 //            departure = LocalDateTime.parse("2017-10-22T00:00");
         try {
             Station from = fromAll.get(0);
