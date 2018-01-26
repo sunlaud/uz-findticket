@@ -54,7 +54,7 @@ public class TimeAndPlaceDto {
     @JsonProperty("time")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
-    private final LocalTime time; //format 22:00
+    private LocalTime time; //format 22:00
 
     /** time when train arrives/departures to/from station in search request (may not be the same as {@link #stationName} */
     public LocalDateTime getDate() {
