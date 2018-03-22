@@ -10,12 +10,6 @@
 
     <artifactId>findticket-uz-client</artifactId>
 
-    <properties>
-        <feign.version>8.18.0</feign.version>
-        <jackson-version>2.9.0</jackson-version>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>io.github.sunlaud.findticket</groupId>
@@ -24,22 +18,18 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -48,32 +38,26 @@
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jaxrs</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jackson</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-slf4j</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-core</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-okhttp</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -87,12 +71,10 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
-            <version>2.7.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
