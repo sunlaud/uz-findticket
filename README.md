@@ -14,3 +14,9 @@ mvn clean install
 ```
 java -jar findticket-cli-app/target/findticket-cli-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
+
+
+## Release
+1. ```mvn --batch-mode release:prepare```
+2. ```mvn  release:clean```
+3. ```git push --follow-tags```
