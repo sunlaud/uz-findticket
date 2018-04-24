@@ -15,7 +15,7 @@ public class TransportRoute {
     private String name;
 
     private Station from;
-    private Station till;
+    private Station to;
 
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;

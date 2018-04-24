@@ -12,8 +12,8 @@ public class Filters {
         return new ArrivingBefore(date);
     }
 
-    public static ComparablePredicateBuilder hasMoreThan(int amount) {
-        return new ComparablePredicateBuilder(amount);
+    public static FreeSeatsGreaterThanPredicateBuilder hasMoreThan(int amount) {
+        return new FreeSeatsGreaterThanPredicateBuilder(amount);
     }
 
     public static Predicate<TransportRoute> routeIdEqualTo(String routeId) {
@@ -22,7 +22,7 @@ public class Filters {
 
 
     @Data
-     public static class ComparablePredicateBuilder {
+    public static class FreeSeatsGreaterThanPredicateBuilder {
         private final int amount;
 
         public Predicate<TransportRoute> freeSeatsWithTypeId(SeatType seatType) {

@@ -65,7 +65,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         expectedRoute.setId("120Л");
         expectedRoute.setName("Львів - Запоріжжя 1");
         expectedRoute.setFrom(new Station("Львів", "2218000"));
-        expectedRoute.setTill(new Station("Запоріжжя 1", "2210800"));
+        expectedRoute.setTo(new Station("Запоріжжя 1", "2210800"));
         expectedRoute.setDepartureDate(LocalDateTime.parse("2018-01-23T14:05:00.000"));
         expectedRoute.setArrivalDate(LocalDateTime.parse("2018-01-24T14:52:00.000"));
         expectedRoute.setTravelTime(new Period("PT24H47M"));
@@ -92,7 +92,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         //THEN
         assertThat(actualRoutes).isNotEmpty();
         for (TransportRoute actualRoute : actualRoutes) {
-            softly.assertThat(actualRoute).hasFrom(from).hasTill(to);
+            softly.assertThat(actualRoute).hasFrom(from).hasTo(to);
             softly.assertThat(actualRoute.getDepartureDate()).isGreaterThanOrEqualTo(departure);
             softly.assertThat(actualRoute).hasNoNullFieldsOrProperties();
         }

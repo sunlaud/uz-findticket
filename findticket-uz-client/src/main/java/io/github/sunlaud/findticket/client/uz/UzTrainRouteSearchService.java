@@ -57,7 +57,7 @@ public class UzTrainRouteSearchService implements RouteSearchService {
         for (TrainDto trainDto : response.getValue()) {
             TransportRoute route = Mappers.get().getRouteMapper().fromDto(trainDto);
             route.setFrom(stationFrom);
-            route.setTill(stationTo);
+            route.setTo(stationTo);
             routes.add(route);
         }
         return routes;

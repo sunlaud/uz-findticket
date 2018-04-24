@@ -31,14 +31,14 @@ public class Mappers {
         mapperFactory.classMap(TrainDto.class, TransportRoute.class)
                 .field("from.stationName", "from.name")
                 .field("from.date", "departureDate")
-                .field("till.stationName", "till.name")
-                .field("till.date", "arrivalDate")
+                .field("to.stationName", "to.name")
+                .field("to.date", "arrivalDate")
                 .exclude("travelTime")
                 .byDefault()
                 .customize(
                         new CustomMapper<TrainDto, TransportRoute>() {
                             public void mapAtoB(TrainDto src, TransportRoute target, MappingContext context) {
-                                target.setName(src.getFrom().getStationName() + " - " + src.getTill().getStationName());
+                                target.setName(src.getFrom().getStationName() + " - " + src.getTo().getStationName());
                                 target.setTravelTime(src.getTravelTime());
                             }
                         })

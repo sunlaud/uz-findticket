@@ -11,11 +11,11 @@ import static fr.xebia.extras.selma.IgnoreMissing.DESTINATION;
 @Mapper(withIgnoreMissing = DESTINATION,
         withCustomFields = {
                 @Field({"from.date","departureDate"}),
-                @Field({"till.date","arrivalDate"})
+                @Field({"to.date","arrivalDate"})
         },
         withIgnoreFields = {
                 "io.github.sunlaud.findticket.model.TransportRoute.from",
-                "io.github.sunlaud.findticket.model.TransportRoute.till"
+                "io.github.sunlaud.findticket.model.TransportRoute.to"
         }
 )
 public interface TransportRouteMapper {
