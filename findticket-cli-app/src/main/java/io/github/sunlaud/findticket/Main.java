@@ -13,7 +13,10 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.or;
@@ -31,7 +34,56 @@ public class Main {
     }
 
     private void run() {
-            List<Station> fromAll = routeSearchService.findStations("Дніпро-Головний");
+
+        String[] stations = {
+                "Бердичів",
+                "Бердянськ",
+                "Вінниця",
+                "Горлівка",
+                "Дніпродзержинськ",
+                "Дніпро",
+                "Донецьк",
+                "Житомир",
+                "Запоріжжя",
+                "Запоріжжя",
+                "Івано-Франківськ",
+                "Київ",
+                "Київ",
+                "Кіровоград",
+                "Кривий Ріг",
+                "Луганськ",
+                "Луцьк",
+                "Львів",
+                "Микитівка",
+                "Миколаїв",
+                "Одеса",
+                "Полтава",
+                "Полтава",
+                "Рівне",
+                "Суми",
+                "Тернопіль",
+                "Ужгород",
+                "Харків",
+                "Херсон",
+                "Хмельницький",
+                "Черкаси",
+                "Чернігів",
+                "Чернівці"
+        };
+
+
+        Set<String> uniqueStations = new HashSet<>(Arrays.asList(stations));
+        for (int i = 0; i < uniqueStations.size(); i++) {
+            List<Station> found = routeSearchService.findStations(stations[i]);
+            for (Station station : found) {
+                System.out.println("\"" + station.getName() + "\",");
+            }
+        }
+
+        if (true) return;
+
+
+        List<Station> fromAll = routeSearchService.findStations("Дніпро-Головний");
             System.out.println(fromAll);
             List<Station> tillAll = routeSearchService.findStations("Львів");
             System.out.println(tillAll);

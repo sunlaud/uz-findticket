@@ -10,4 +10,9 @@ public class Station {
     private final String name;
     @NonNull
     private final String id;
+
+    @Override
+    public String toString() {
+        return "" + name + " (#" + id + ")";
+    }
 }
