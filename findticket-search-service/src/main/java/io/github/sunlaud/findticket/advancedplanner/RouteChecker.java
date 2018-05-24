@@ -1,6 +1,9 @@
 package io.github.sunlaud.findticket.advancedplanner;
 
+import com.google.common.collect.Collections2;
+
 import io.github.sunlaud.findticket.RouteSearchService;
+import io.github.sunlaud.findticket.filtering.Filters;
 import io.github.sunlaud.findticket.model.Station;
 import io.github.sunlaud.findticket.model.TransportRoute;
 import org.joda.time.LocalDateTime;
@@ -18,14 +21,15 @@ public class RouteChecker {
 
     public ComplexRoute check(Route<Station> route) {
         Collection<TransportRoute> routes1 = routeSearchService.findRoutes(
-                route.getDepartureStation(), route.getConnectionStation(), LocalDateTime.parse("2018-06-02T5:00"));
+                route.getDepartureStation(), route.getConnectionStation(), LocalDateTime.parse("2018-06-02T16:00"));
         if (routes1.isEmpty()) {
             return null;
         }
         Collection<TransportRoute> routes2 = routeSearchService.findRoutes(
-                route.getConnectionStation(), route.getArrivalStation(), LocalDateTime.parse("2018-06-02T5:00"));
+                route.getConnectionStation(), route.getArrivalStation(), LocalDateTime.parse("2018-06-02T16:00"));
         Collection<TransportRoute> routes2Tomorrow = routeSearchService.findRoutes(
-                route.getConnectionStation(), route.getArrivalStation(), LocalDateTime.parse("2018-06-03T5:00"));
+                route.getConnectionStation(), route.getArrivalStation(), LocalDateTime.parse("2018-06-03T00:00"));
+        routes2Tomorrow = Collections2.filter(routes2Tomorrow, Filters.arrivingBefore(LocalDateTime.parse("2018-06-04T00:00")));
         routes2.addAll(routes2Tomorrow);
         if (routes2.isEmpty()) {
             return null;

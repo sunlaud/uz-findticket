@@ -1,5 +1,7 @@
 package io.github.sunlaud.findticket.advancedplanner;
 
+import com.google.common.base.Preconditions;
+
 import io.github.sunlaud.findticket.model.Station;
 import io.github.sunlaud.findticket.model.TransportRoute;
 import io.github.sunlaud.findticket.util.RouteFormatter;
@@ -11,6 +13,14 @@ import java.util.List;
 public class ComplexRoute {
     private final Route<Station> route;
     private final List<? extends List<TransportRoute>> parts;
+
+    public ComplexRoute(Route<Station> route, List<? extends List<TransportRoute>> parts) {
+        for (List<TransportRoute> part : parts) {
+            Preconditions.checkArgument(!part.isEmpty(), "Part can not be empty");
+        }
+        this.route = route;
+        this.parts = parts;
+    }
 
     @Override
     public String toString() {
