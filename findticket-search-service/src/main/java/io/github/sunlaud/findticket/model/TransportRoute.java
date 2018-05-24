@@ -20,6 +20,7 @@ public class TransportRoute {
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
 
+    //TODO - should be Duration
     private Period travelTime;
     private Map<SeatType, Integer> freeSeatsCountByType;
 }

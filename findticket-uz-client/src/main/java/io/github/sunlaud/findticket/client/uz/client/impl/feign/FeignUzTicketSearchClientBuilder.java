@@ -134,7 +134,7 @@ public class FeignUzTicketSearchClientBuilder {
 
         return Feign.builder()
                 .logger(new Slf4jLogger())
-                .logLevel(Logger.Level.FULL)
+                .logLevel(Logger.Level.NONE)
                 .encoder(new UrlEncodingEncoder())
                 .decoder(new JacksonDecoder(mapper))
                 .contract(new JAXRSContract())

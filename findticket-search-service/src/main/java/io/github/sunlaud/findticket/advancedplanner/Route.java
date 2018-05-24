@@ -5,16 +5,10 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class Route<T> implements Comparable<Route<T>> {
+public class  Route<T> {
     private final T departureStation;
     private final T connectionStation;
     private final T arrivalStation;
-    private final long straightTotalDistanceKm;
-
-    @Override
-    public int compareTo(Route<T> other) {
-        return Long.compare(this.straightTotalDistanceKm, other.straightTotalDistanceKm);
-    }
 
     @Override
     public String toString() {

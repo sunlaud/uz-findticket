@@ -8,13 +8,13 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MappedStation {
+public class StationWithCoordinates {
     @Getter
     private final String stationName;
     private final double latitude;
     private final double longitude;
 
-    public double distanceTo(MappedStation other) {
+    public double distanceTo(StationWithCoordinates other) {
         double latitudeDiff = this.latitude - other.latitude;
         double longitudeDiff = this.longitude - other.longitude;
         return Math.sqrt(latitudeDiff * latitudeDiff + longitudeDiff * longitudeDiff);

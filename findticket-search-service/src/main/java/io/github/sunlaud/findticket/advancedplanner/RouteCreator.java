@@ -18,12 +18,11 @@ public class RouteCreator {
     public List<Route<Station>> findRoutes(String departureStationName, String arrivalStationName) {
         List<Route<Station>> routes = new ArrayList<>(allExistingStationNames.length);
         for (String connectionStation : allExistingStationNames) {
-            if (!connectionStation.equals(departureStationName) && !connectionStation.equals(departureStationName)) {
+            if (!connectionStation.equals(departureStationName) && !connectionStation.equals(arrivalStationName)) {
                 routes.add(new Route<>(
                         stationsCache.getStationByExactName(departureStationName),
                         stationsCache.getStationByExactName(connectionStation),
-                        stationsCache.getStationByExactName(arrivalStationName),
-                        0));
+                        stationsCache.getStationByExactName(arrivalStationName)));
             }
         }
         return routes;

@@ -29,7 +29,7 @@ public class RouteCreatorTest {
                 "Миколаїв Пас.",
                 "Одеса",
                 "Полтава Київська",
-                "Полтава-Півд.",
+//                "Полтава-Півд.",
                 "Рівне",
                 "Суми",
                 "Тернопіль",
@@ -43,8 +43,16 @@ public class RouteCreatorTest {
         String departureStationName = "Тернопіль";
         String arrivalStationName = "Запоріжжя 1";
 
-        RouteCreator sut = new RouteCreator(stations, new StationsCache(new UzTrainRouteSearchService()));
+        UzTrainRouteSearchService routeSearchService = new UzTrainRouteSearchService();
+        RouteChecker routeChecker = new RouteChecker(routeSearchService);
+        RouteCreator sut = new RouteCreator(stations, new StationsCache(routeSearchService));
         List<Route<Station>> routes = sut.findRoutes(departureStationName, arrivalStationName);
+        for (Route<Station> route : routes) {
+//            System.out.println("checking route: " + route);
+            ComplexRoute complexRoute = routeChecker.check(route);
+            System.out.println(complexRoute);
+        }
+
 
         System.out.println(routes);
     }

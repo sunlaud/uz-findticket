@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class ErrorSearchResponse<T> extends SearchResponse<T> {
     @JsonProperty("data")
-    private String message;
+    private Object message;
 
     @JsonIgnore
     @Override
     public T getValue() {
-        throw new ApiInvocationException(message);
+        throw new ApiInvocationException(String.valueOf(message));
     }
 }
