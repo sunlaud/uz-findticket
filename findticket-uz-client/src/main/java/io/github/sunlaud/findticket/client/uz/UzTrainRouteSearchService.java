@@ -51,16 +51,20 @@ public class UzTrainRouteSearchService implements RouteSearchService {
                 .stationIdFrom(Integer.parseInt(stationFrom.getId()))
                 .stationIdTill(Integer.parseInt(stationTo.getId()))
                 .build();
-
-        SearchResponse<List<TrainDto>> response = api.findTrains(request);
-        List<TransportRoute> routes = new ArrayList<>(response.getValue().size());
-        for (TrainDto trainDto : response.getValue()) {
-            TransportRoute route = Mappers.get().getRouteMapper().fromDto(trainDto);
-            route.setFrom(stationFrom);
-            route.setTo(stationTo);
-            routes.add(route);
+        try {
+            SearchResponse<List<TrainDto>> response = api.findTrains(request);
+            List<TransportRoute> routes = new ArrayList<>(response.getValue().size());
+            for (TrainDto trainDto : response.getValue()) {
+                TransportRoute route = Mappers.get().getRouteMapper().fromDto(trainDto);
+                route.setFrom(stationFrom);
+                route.setTo(stationTo);
+                routes.add(route);
+            }
+            return routes;
+        } catch (Exception ex) {
+            log.error("error: ", ex);
+            return new ArrayList<>();
         }
-        return routes;
     }
 
 //

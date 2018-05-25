@@ -17,7 +17,7 @@ public class HandMadeTransportRouteMapper implements TransportRouteMapper {
         TransportRoute out = new TransportRoute();
         out.setId(in.getId());
         out.setName(in.getName());
-        out.setTravelTime(in.getTravelTime());
+        out.setTravelTime(in.getTravelTime().toStandardDuration());
         out.setDepartureDate(in.getFrom().getDate());
         out.setArrivalDate(in.getTill().getDate());
         Map<SeatType, Integer> seats = new HashMap<>();

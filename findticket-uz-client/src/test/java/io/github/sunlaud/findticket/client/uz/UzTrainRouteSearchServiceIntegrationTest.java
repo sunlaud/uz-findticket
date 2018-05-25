@@ -68,7 +68,7 @@ public class UzTrainRouteSearchServiceIntegrationTest {
         expectedRoute.setTo(new Station("Запоріжжя 1", "2210800"));
         expectedRoute.setDepartureDate(LocalDateTime.parse("2018-01-23T14:05:00.000"));
         expectedRoute.setArrivalDate(LocalDateTime.parse("2018-01-24T14:52:00.000"));
-        expectedRoute.setTravelTime(new Period("PT24H47M"));
+        expectedRoute.setTravelTime(new Period("PT24H47M").toStandardDuration());
         HashMap<SeatType, Integer> expectedFreeSeats = new HashMap<>();
         expectedFreeSeats.put(new SeatType("К"), 11);
         expectedFreeSeats.put(new SeatType("П"), 139);

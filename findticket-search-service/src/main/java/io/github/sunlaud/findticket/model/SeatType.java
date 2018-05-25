@@ -20,6 +20,6 @@ public class SeatType {
 
     @Override
     public String toString() {
-        return name + "(" + id + ")";
+        return id;
     }
 }

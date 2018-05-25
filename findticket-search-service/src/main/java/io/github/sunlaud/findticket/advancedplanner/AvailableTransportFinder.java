@@ -1,5 +1,6 @@
 package io.github.sunlaud.findticket.advancedplanner;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 
 import io.github.sunlaud.findticket.RouteSearchService;
@@ -12,18 +13,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class RouteChecker {
+public class AvailableTransportFinder {
     private final RouteSearchService routeSearchService;
 
-    public RouteChecker(RouteSearchService routeSearchService) {
+    public AvailableTransportFinder(RouteSearchService routeSearchService) {
         this.routeSearchService = routeSearchService;
     }
 
-    public ComplexRoute check(Route<Station> route) {
+    public Optional<AvailableTransportForRoute> findTransport(Route<Station> route) {
         Collection<TransportRoute> routes1 = routeSearchService.findRoutes(
                 route.getDepartureStation(), route.getConnectionStation(), LocalDateTime.parse("2018-06-02T16:00"));
         if (routes1.isEmpty()) {
-            return null;
+            return Optional.absent();
         }
         Collection<TransportRoute> routes2 = routeSearchService.findRoutes(
                 route.getConnectionStation(), route.getArrivalStation(), LocalDateTime.parse("2018-06-02T16:00"));
@@ -32,9 +33,9 @@ public class RouteChecker {
         routes2Tomorrow = Collections2.filter(routes2Tomorrow, Filters.arrivingBefore(LocalDateTime.parse("2018-06-04T00:00")));
         routes2.addAll(routes2Tomorrow);
         if (routes2.isEmpty()) {
-            return null;
+            return Optional.absent();
         }
-        return new ComplexRoute(route, Arrays.asList(new ArrayList<TransportRoute>(routes1), new ArrayList<TransportRoute>(routes2)));
+        return Optional.of(new AvailableTransportForRoute(route, Arrays.asList(new ArrayList<>(routes1), new ArrayList<>(routes2))));
     }
 
 }

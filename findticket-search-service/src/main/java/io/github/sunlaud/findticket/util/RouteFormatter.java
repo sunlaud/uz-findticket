@@ -4,7 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import io.github.sunlaud.findticket.model.TransportRoute;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.Duration;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -20,8 +22,7 @@ public class RouteFormatter {
             sb.append(StringUtils.rightPad(freeSeats, 16) + " (");
             sb.append(HUMAN_READABLE_DATE.print(route.getDepartureDate()) + " -> ");
             sb.append(HUMAN_READABLE_DATE.print(route.getArrivalDate()) + ", ");
-            Period travelTime = route.getTravelTime();
-            sb.append(String.format("%sh%sm, ", travelTime.getHours(), travelTime.minusHours(travelTime.getHours()).getMinutes()));
+            sb.append(formatDuration(route.getTravelTime()) + ", ");
             sb.append(route.getName() + ")");
 
             return sb.toString();
@@ -32,12 +33,11 @@ public class RouteFormatter {
         @Override
         public String apply(TransportRoute route) {
             String placesPrefix = "\n - ";
-            Period travelTime = route.getTravelTime();
-            String header = String.format("%s (%s), %s:%s, %s -> %s" + placesPrefix,
+            Duration travelTime = route.getTravelTime();
+            String header = String.format("%s (%s), %s, %s -> %s" + placesPrefix,
                     route.getId(),
                     route.getName(),
-                    travelTime.getHours(),
-                    travelTime.minusHours(travelTime.getHours()).getMinutes(),
+                    formatDuration(travelTime),
                     HUMAN_READABLE_DATE.print(route.getDepartureDate()),
                     HUMAN_READABLE_DATE.print(route.getArrivalDate())
             );
@@ -55,6 +55,9 @@ public class RouteFormatter {
         return resultSb.toString();
     }
 
-
+    public static String formatDuration(Duration duration) {
+        Period period = duration.toPeriod(PeriodType.time());
+        return String.format("%02d:%02d", period.getHours(), period.getMinutes());
+    }
 
 }

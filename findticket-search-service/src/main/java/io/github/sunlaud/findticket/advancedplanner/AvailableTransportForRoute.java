@@ -10,11 +10,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ComplexRoute {
+public class AvailableTransportForRoute {
     private final Route<Station> route;
     private final List<? extends List<TransportRoute>> parts;
 
-    public ComplexRoute(Route<Station> route, List<? extends List<TransportRoute>> parts) {
+    public AvailableTransportForRoute(Route<Station> route, List<? extends List<TransportRoute>> parts) {
         for (List<TransportRoute> part : parts) {
             Preconditions.checkArgument(!part.isEmpty(), "Part can not be empty");
         }
