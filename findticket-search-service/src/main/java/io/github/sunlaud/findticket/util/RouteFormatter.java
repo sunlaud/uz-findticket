@@ -9,7 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class RouteFormatter {
-    private static final DateTimeFormatter HUMAN_READABLE_DATE = DateTimeFormat.forPattern("EE d MMM HH:mm");
+    private static final DateTimeFormatter HUMAN_READABLE_DATE = DateTimeFormat.forPattern("dd MMM HH:mm");
 
     public static final Function<TransportRoute, String> SINGLE_LINE = new Function<TransportRoute, String>() {
         @Override
