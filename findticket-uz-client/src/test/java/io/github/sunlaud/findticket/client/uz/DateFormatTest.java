@@ -28,6 +28,7 @@ public class DateFormatTest {
         }
     }
 
+    //this test passes on desktop computer, but deserialization fails on android for some reason
     @Test
     public void objectMapperIsAbleToParseUkrainianDayOfWeek() throws IOException {
         String json = "{ \"date\": \"п'ятниця, 01.06.2018\" }";
