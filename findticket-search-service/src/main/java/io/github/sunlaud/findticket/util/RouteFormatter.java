@@ -33,13 +33,14 @@ public class RouteFormatter {
         public String apply(TransportRoute route) {
             String placesPrefix = "\n - ";
             Period travelTime = route.getTravelTime();
-            String header = String.format("%s (%s), %s:%s, %s -> %s" + placesPrefix,
+            String header = String.format("%s (%s), %s:%s, %s -> %s [%s]" + placesPrefix,
                     route.getId(),
                     route.getName(),
                     travelTime.getHours(),
                     travelTime.minusHours(travelTime.getHours()).getMinutes(),
                     HUMAN_READABLE_DATE.print(route.getDepartureDate()),
-                    HUMAN_READABLE_DATE.print(route.getArrivalDate())
+                    HUMAN_READABLE_DATE.print(route.getArrivalDate()),
+                    route.getDetailsUrl()
             );
             String freeSeats = Joiner.on(placesPrefix).withKeyValueSeparator(": ").join(route.getFreeSeatsCountByType());
             return header + freeSeats;

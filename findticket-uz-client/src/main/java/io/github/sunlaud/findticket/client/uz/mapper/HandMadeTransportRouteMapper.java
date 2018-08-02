@@ -27,6 +27,7 @@ public class HandMadeTransportRouteMapper implements TransportRouteMapper {
             seats.put(seatType, freeSeatsDto.getPlaces());
         }
         out.setFreeSeatsCountByType(seats);
+        out.setDetailsUrl(in.getDetailsUrl());
         return out;
     }
 }
